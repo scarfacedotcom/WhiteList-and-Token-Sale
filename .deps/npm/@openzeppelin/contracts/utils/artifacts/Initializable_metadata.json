@@ -1,0 +1,55 @@
+{
+	"compiler": {
+		"version": "0.8.1+commit.df193b15"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Deprecated. This contract is kept in the Upgrades Plugins for backwards compatibility purposes. Users should use openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol instead. Helper contract to support initializer functions. To use it, replace the constructor with a function that has the `initializer` modifier. WARNING: Unlike constructors, initializer functions must be manually invoked. This applies both to deploying an Initializable contract, as well as extending an Initializable contract via inheritance. WARNING: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or ensure that all initializers are idempotent, because this is not dealt with automatically as with constructors.",
+			"kind": "dev",
+			"methods": {},
+			"stateVariables": {
+				"initialized": {
+					"details": "Indicates that the contract has been initialized."
+				},
+				"initializing": {
+					"details": "Indicates that the contract is in the process of being initialized."
+				}
+			},
+			"title": "Initializable",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			".deps/npm/@openzeppelin/contracts/utils/Context.sol": "Initializable"
+		},
+		"evmVersion": "istanbul",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		".deps/npm/@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xd803124004d94693e3990bb55ac3f671dfe8990c2127f573fdb41894d0185b79",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://658c9dc60c2f1bf64ea01aefd0c24c3e63e55a2bb85a1b5c4e0c1cf30b738197",
+				"dweb:/ipfs/QmRm12xN1QZYBtygQ7XMtocVqLG3SvhrusB4Ud5QSPt4q4"
+			]
+		}
+	},
+	"version": 1
+}
