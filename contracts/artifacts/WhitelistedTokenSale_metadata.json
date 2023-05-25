@@ -712,11 +712,11 @@
 			]
 		},
 		"@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol": {
-			"keccak256": "0xf051aaed4d08e72ed48d8f977e1a7f6e69f597221582d566def75d6a93a842b4",
+			"keccak256": "0xe1d32e268391be0363a839c4c620151ae4f141f406c6563edda6806567167c85",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c3ae2a762471a572e9aabc34e88d3ab1b09e3844acf136cffd046ed89e173448",
-				"dweb:/ipfs/QmVxgRio3ww9Cp4Nvn8wahRBA5kNAVrYVwJYJpH9o43oL2"
+				"bzz-raw://e6a26ed5b899109573fbdd09479cefd2fbddc672730cc9e5cd8436ab30a3c6e3",
+				"dweb:/ipfs/QmZCwQxx1TGmwLXyJn9eegyFFbgZwUZN2gNGsJA3DXgUMA"
 			]
 		},
 		"@openzeppelin/contracts/math/SafeMath.sol": {
@@ -768,11 +768,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0x2cebaa65540c908c45bb110986f9882e5443fc470b9bde8e2b656860a04c1d2c",
+			"keccak256": "0xe5fdd2ae7e6490d2fd7c3ec240db54c3a3764801dbab4114a705adb287a11acd",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://8fea883ac7114ec7d1c045f8610af8bfaafc928687721a8dd8cdab71d9e79f71",
-				"dweb:/ipfs/QmXX1QF7SYnRdWgFzMt1JccHTTYyrmD34JxQh1SMLuijsr"
+				"bzz-raw://5d410ab0d520d25dea0d337f71f801103041e8a587923f99b52c708a313dd7da",
+				"dweb:/ipfs/QmTrZnXfivP8GyX7JuDorEtrveoqPAwa4bVWSy3CXgJzjh"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {

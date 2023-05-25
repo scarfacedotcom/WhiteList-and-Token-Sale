@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Galt Project Society Construction and Terraforming Company
 /*
  * Copyright ©️ 2018-2020 Galt•Project Society Construction and Terraforming Company
  * (Founded by [Nikolai Popeka](https://github.com/npopeka)
@@ -47,7 +48,18 @@ contract Managed is Administrated {
   }
 
   function getManagerList() external view returns (address[] memory) {
-    return managers.enumerate();
+    
+    //JGK 5/25/23 - adjusted below code because .enumerate was throwing a compiler error.
+    //return managers.enumerate();
+
+    uint256 length = managers.length();
+    address[] memory tokens = new address[](length);
+    
+    for (uint256 i = 0; i < length; i++) {
+      tokens[i] = managers.at(i);
+    }
+    
+    return tokens;
   }
 
   function getManagerCount() external view returns (uint256) {

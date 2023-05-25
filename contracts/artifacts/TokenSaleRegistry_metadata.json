@@ -1,0 +1,521 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "AddAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "manager",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "AddManager",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "customer",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "manager",
+						"type": "address"
+					}
+				],
+				"name": "AddWhitelistedCustomer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "manager",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveManager",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "customer",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "manager",
+						"type": "address"
+					}
+				],
+				"name": "RemoveWhitelistedCustomer",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "addAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customer",
+						"type": "address"
+					}
+				],
+				"name": "addCustomerToWhiteList",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_manager",
+						"type": "address"
+					}
+				],
+				"name": "addManager",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAdminCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAdminList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCustomersWhiteList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCustomersWhiteListCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getManagerCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getManagerList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "isAdmin",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customer",
+						"type": "address"
+					}
+				],
+				"name": "isCustomerInWhiteList",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_manager",
+						"type": "address"
+					}
+				],
+				"name": "isManager",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isOwner",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "removeAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customer",
+						"type": "address"
+					}
+				],
+				"name": "removeCustomerFromWhiteList",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_manager",
+						"type": "address"
+					}
+				],
+				"name": "removeManager",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customer",
+						"type": "address"
+					}
+				],
+				"name": "validateWhitelistedCustomer",
+				"outputs": [],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"isOwner()": {
+					"details": "Returns true if the caller is the current owner."
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/TokenSaleRegistry.sol": "TokenSaleRegistry"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol": {
+			"keccak256": "0xc97186ac0ce22cdca8cc36e39956d42805d30d63a73dc29685982dfd6e094965",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://289e8008b76436f25e09098c8236d06acb5f12d135fd9a5f62d1cb5940b2922e",
+				"dweb:/ipfs/QmPKhKXuFAza31Z3zksEqSrgYUiLNi9b4UVL7c11ckUpTV"
+			]
+		},
+		"@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol": {
+			"keccak256": "0xe1d32e268391be0363a839c4c620151ae4f141f406c6563edda6806567167c85",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e6a26ed5b899109573fbdd09479cefd2fbddc672730cc9e5cd8436ab30a3c6e3",
+				"dweb:/ipfs/QmZCwQxx1TGmwLXyJn9eegyFFbgZwUZN2gNGsJA3DXgUMA"
+			]
+		},
+		"@openzeppelin/contracts/utils/EnumerableSet.sol": {
+			"keccak256": "0x19c5d7d4c1141f0f6bf5b4d28e02c8329b78ad323c1931b3069d000ffb98c142",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://66f68e50348220ddca37711681bdffc61ea30a4623fc76df8f7713e901a46098",
+				"dweb:/ipfs/QmS8wzwEvby4mLSAcFeBLGXSUoEXy6UNZSXEqeXqCgNAE6"
+			]
+		},
+		"@openzeppelin/upgrades/contracts/Initializable.sol": {
+			"keccak256": "0x9c81c571e2957eb7d19da042b9aed1195457fb970304a770d62079afa1866836",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ef3b6ab6bf20d3543d39b7745044c8811c697f627546bcd7c168f73e53fe4e3c",
+				"dweb:/ipfs/Qmb3qediABgB5pA9dX4n9S7sNFg1uAaEP7RJWfDaPZCqv4"
+			]
+		},
+		"contracts/TokenSaleRegistry.sol": {
+			"keccak256": "0x2577439c5ad7c6693bbef673ea83eba42cab0f0a48d7b2eafcd57843fe8418bd",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://73c8a3a04d48334e2d7e8286f9c67ae6dce99c64c544718def9805dab2536fe8",
+				"dweb:/ipfs/QmepNfgV1my492Ht6poV7pJ4TjrHzH4Rz2swrazHSWQkDt"
+			]
+		},
+		"contracts/interfaces/ITokenSaleRegistry.sol": {
+			"keccak256": "0x18f2de3a901ac04c860cef61e95b446f75abc85bae46f987a57f561dd872df8f",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://2f0067cbe21f4c2129fcdee1f1c8d1a0ee3a712d7fe2efe1368c565cab9381b4",
+				"dweb:/ipfs/QmRzg2119PptBDTYcL78q5k9sbVUkA5it462L9Vbcv5tLN"
+			]
+		},
+		"contracts/traits/Administrated.sol": {
+			"keccak256": "0x20feb7bea7174c29167ec9c8059e19941772d6f255d660359a8a762cc6a5e094",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://0dd2873b654ce4cf672bbabb7d7e656220f4d8203bc41fef79fe26644b952152",
+				"dweb:/ipfs/QmZU8htV5RneRDrQFCtmvaXLzeL7mJciNYGXA5YnpK1CeU"
+			]
+		},
+		"contracts/traits/Managed.sol": {
+			"keccak256": "0x60f1f5f88e033ddad489765e741d857d68008324ed1f4acefbf393b859c7a86b",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://d7d700588abe4dceab80c29a26bae1de6415c3a76e326be9f1988cd01dcfb9df",
+				"dweb:/ipfs/QmWqucXjZtLAz7fDZdYdcF3S9BKii6duAC886ese6GLUNd"
+			]
+		}
+	},
+	"version": 1
+}

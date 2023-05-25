@@ -7,7 +7,8 @@
  * [Basic Agreement](ipfs/QmaCiXUmSrP16Gz8Jdzq6AJESY1EAANmmwha15uR3c1bsS)).
  */
 
-pragma solidity >=0.6.0 <0.8.2;
+pragma solidity >=0.5.0 <0.9.0;
+
 //pragma solidity ^0.5.13;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Mintable.sol";
