@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -72,7 +72,7 @@
 		"compilationTarget": {
 			"contracts/interfaces/ITokenSaleRegistry.sol": "ITokenSaleRegistry"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -85,10 +85,11 @@
 	},
 	"sources": {
 		"contracts/interfaces/ITokenSaleRegistry.sol": {
-			"keccak256": "0x55e0f13e1e5e80405dcef1c54a2ea10621fdc21fa4a7369abedf802b7a7151d9",
+			"keccak256": "0x18f2de3a901ac04c860cef61e95b446f75abc85bae46f987a57f561dd872df8f",
+			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://c07e2b9eb5f290fbc8b35b25cfe2e9bf82100dc049f2e92a9127afaf455b6f06",
-				"dweb:/ipfs/QmRbxWm4A6nHyABk4EtsSajhbPfEL9U95eDhquZPmead3n"
+				"bzz-raw://2f0067cbe21f4c2129fcdee1f1c8d1a0ee3a712d7fe2efe1368c565cab9381b4",
+				"dweb:/ipfs/QmRzg2119PptBDTYcL78q5k9sbVUkA5it462L9Vbcv5tLN"
 			]
 		}
 	},

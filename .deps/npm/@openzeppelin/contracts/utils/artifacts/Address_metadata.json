@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -21,7 +21,7 @@
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/contracts/utils/Address.sol": "Address"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -34,11 +34,11 @@
 	},
 	"sources": {
 		".deps/npm/@openzeppelin/contracts/utils/Address.sol": {
-			"keccak256": "0x8d89706b128557ff1a7dc91e3ac13aff700f9a673ebbc986e69fb82aaddbcd16",
+			"keccak256": "0xe5bd3cc9d310d651b3c599a5b5bc94bdebb079ee085c8ad3bba4bffa255338b9",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://58bfc65761329945fcf034b7a7342f1e6fbdcf44e6789da9389a04960542e4a1",
-				"dweb:/ipfs/QmWSJkMW6WUV47ftuprAk2jK9z63g7G5akcYTZwR2swU9m"
+				"bzz-raw://bf7adbcb88df4ca17a262387468a436c21ac601e0be84a64c69aa5b87c061670",
+				"dweb:/ipfs/QmQSrVN1DnpqD3TrdN4aDZ6nhqCXD3Vg6rNiG87tZng2Qy"
 			]
 		}
 	},

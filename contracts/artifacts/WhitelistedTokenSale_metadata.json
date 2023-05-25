@@ -1,0 +1,812 @@
+{
+	"compiler": {
+		"version": "0.8.19+commit.7dd6d404"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "AddAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "customer",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "resultAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "BuyTokens",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "Paused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveCustomerToken",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "tokenSaleRegistry",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"name": "SetTokenSaleRegistry",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "wallet",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "SetWallet",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "Unpaused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "token",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "rateMul",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "rateDiv",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "UpdateCustomerToken",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "addAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rateMul",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_rateDiv",
+						"type": "uint256"
+					}
+				],
+				"name": "addOrUpdateCustomerToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "_customerToken",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_customerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_weiAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "buyTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "customerTokenInfo",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "rateMul",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rateDiv",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalReceived",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalSold",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAdminCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAdminList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCustomerTokenCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getCustomerTokenList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customerToken",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_weiAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "getTokenAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_tokenToSell",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_tokenSaleRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_whitelistEnabled",
+						"type": "bool"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "isAdmin",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "isOwner",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_customerToken",
+						"type": "address"
+					}
+				],
+				"name": "isTokenAvailable",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "paused",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					}
+				],
+				"name": "removeAdmin",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"name": "removeCustomerToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "contract ITokenSaleRegistry",
+						"name": "_tokenSaleRegistry",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "_whitelistEnabled",
+						"type": "bool"
+					}
+				],
+				"name": "setTokenSaleRegistry",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_wallet",
+						"type": "address"
+					}
+				],
+				"name": "setWallet",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokenSaleRegistry",
+				"outputs": [
+					{
+						"internalType": "contract ITokenSaleRegistry",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokenToSell",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "unpause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "wallet",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "whitelistEnabled",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"events": {
+				"Paused(address)": {
+					"details": "Emitted when the pause is triggered by an admin (`account`)."
+				},
+				"Unpaused(address)": {
+					"details": "Emitted when the pause is lifted by an admin (`account`)."
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"initialize(address)": {
+					"details": "Initializes the contract setting the deployer as the initial owner."
+				},
+				"isOwner()": {
+					"details": "Returns true if the caller is the current owner."
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"pause()": {
+					"details": "Called by a pauser to pause, triggers stopped state."
+				},
+				"paused()": {
+					"details": "Returns true if the contract is paused, and false otherwise."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"unpause()": {
+					"details": "Called by a pauser to unpause, returns to normal state."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/WhitelistedTokenSale.sol": "WhitelistedTokenSale"
+		},
+		"evmVersion": "paris",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol": {
+			"keccak256": "0xc97186ac0ce22cdca8cc36e39956d42805d30d63a73dc29685982dfd6e094965",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://289e8008b76436f25e09098c8236d06acb5f12d135fd9a5f62d1cb5940b2922e",
+				"dweb:/ipfs/QmPKhKXuFAza31Z3zksEqSrgYUiLNi9b4UVL7c11ckUpTV"
+			]
+		},
+		"@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol": {
+			"keccak256": "0xf051aaed4d08e72ed48d8f977e1a7f6e69f597221582d566def75d6a93a842b4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c3ae2a762471a572e9aabc34e88d3ab1b09e3844acf136cffd046ed89e173448",
+				"dweb:/ipfs/QmVxgRio3ww9Cp4Nvn8wahRBA5kNAVrYVwJYJpH9o43oL2"
+			]
+		},
+		"@openzeppelin/contracts/math/SafeMath.sol": {
+			"keccak256": "0xb555f6961347e79cc8948331a86290681438cdfd11db1727c9c6b25cfa070c25",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://4448a557db91f77c895ab06a91c6ac01cdd6f7b49b1e0db7492c757e7b31c541",
+				"dweb:/ipfs/QmQo2XmPBdpkiYjXM9NTRLHsiNREEHMcTgJuJ8gJr9WJvU"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xc9424e6565a2f1b98cdd8b6e0d4b99988c3dee50a48cec894c10de205b2aa81d",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8e78be3b581c80b806a45ae67db74dc136af27fac9153aa6b3838da4de3ec3ae",
+				"dweb:/ipfs/QmTxdSJEk6gFA1jRLVP74x397bNhQ951c4g8VhyYUCpmUf"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/SafeERC20.sol": {
+			"keccak256": "0x3c4b6e79af70daf861e5f24f6d563c0bdfbc0449d3d68caaa69f733ad651cfed",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://e660ced52e7c259c0cc113f75c62cfc8277368fceb70fb15d3d7375033efb30f",
+				"dweb:/ipfs/QmeGpyQiFdY8sDNsJ2JA1NWkoVLiLbNBgEt8oPn22gYXNf"
+			]
+		},
+		"@openzeppelin/contracts/utils/Address.sol": {
+			"keccak256": "0xe5bd3cc9d310d651b3c599a5b5bc94bdebb079ee085c8ad3bba4bffa255338b9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bf7adbcb88df4ca17a262387468a436c21ac601e0be84a64c69aa5b87c061670",
+				"dweb:/ipfs/QmQSrVN1DnpqD3TrdN4aDZ6nhqCXD3Vg6rNiG87tZng2Qy"
+			]
+		},
+		"@openzeppelin/contracts/utils/EnumerableSet.sol": {
+			"keccak256": "0x19c5d7d4c1141f0f6bf5b4d28e02c8329b78ad323c1931b3069d000ffb98c142",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://66f68e50348220ddca37711681bdffc61ea30a4623fc76df8f7713e901a46098",
+				"dweb:/ipfs/QmS8wzwEvby4mLSAcFeBLGXSUoEXy6UNZSXEqeXqCgNAE6"
+			]
+		},
+		"@openzeppelin/upgrades/contracts/Initializable.sol": {
+			"keccak256": "0x9c81c571e2957eb7d19da042b9aed1195457fb970304a770d62079afa1866836",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ef3b6ab6bf20d3543d39b7745044c8811c697f627546bcd7c168f73e53fe4e3c",
+				"dweb:/ipfs/Qmb3qediABgB5pA9dX4n9S7sNFg1uAaEP7RJWfDaPZCqv4"
+			]
+		},
+		"contracts/WhitelistedTokenSale.sol": {
+			"keccak256": "0x2cebaa65540c908c45bb110986f9882e5443fc470b9bde8e2b656860a04c1d2c",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://8fea883ac7114ec7d1c045f8610af8bfaafc928687721a8dd8cdab71d9e79f71",
+				"dweb:/ipfs/QmXX1QF7SYnRdWgFzMt1JccHTTYyrmD34JxQh1SMLuijsr"
+			]
+		},
+		"contracts/interfaces/ITokenSaleRegistry.sol": {
+			"keccak256": "0x18f2de3a901ac04c860cef61e95b446f75abc85bae46f987a57f561dd872df8f",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://2f0067cbe21f4c2129fcdee1f1c8d1a0ee3a712d7fe2efe1368c565cab9381b4",
+				"dweb:/ipfs/QmRzg2119PptBDTYcL78q5k9sbVUkA5it462L9Vbcv5tLN"
+			]
+		},
+		"contracts/interfaces/IWhitelistedTokenSale.sol": {
+			"keccak256": "0x288b17e9fc0655de13d05c3a93371028880467dde9f4865a77a0d50cdd65e87f",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://36bf1eb17c4801cf5ddca7a20312c3915e2e5b95088aaab6ae2bf95aab702a51",
+				"dweb:/ipfs/QmfKak16x34aGUj7QinaZHsCVNSVahcWsHX8V8zLKakKbi"
+			]
+		},
+		"contracts/traits/Administrated.sol": {
+			"keccak256": "0x20feb7bea7174c29167ec9c8059e19941772d6f255d660359a8a762cc6a5e094",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://0dd2873b654ce4cf672bbabb7d7e656220f4d8203bc41fef79fe26644b952152",
+				"dweb:/ipfs/QmZU8htV5RneRDrQFCtmvaXLzeL7mJciNYGXA5YnpK1CeU"
+			]
+		},
+		"contracts/traits/Pausable.sol": {
+			"keccak256": "0x67af6e7f45a10ac033f82fc870ae0bb47557816bac60fb8d8d0f14fd0a8b88c8",
+			"license": "Galt Project Society Construction and Terraforming Company",
+			"urls": [
+				"bzz-raw://7e45f0d20ff0d7d5335fdd6e89044a6cae0bc31eb21c64e4d9b2a098452ba5db",
+				"dweb:/ipfs/QmQC7PGPEbV1qvjF3mhLxBGreTnpwTYegxv4m2UfHBDbfp"
+			]
+		}
+	},
+	"version": 1
+}

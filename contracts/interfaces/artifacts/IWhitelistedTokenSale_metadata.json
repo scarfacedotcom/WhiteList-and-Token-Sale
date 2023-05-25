@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -152,7 +152,7 @@
 		"compilationTarget": {
 			"contracts/interfaces/IWhitelistedTokenSale.sol": "IWhitelistedTokenSale"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -165,10 +165,11 @@
 	},
 	"sources": {
 		"contracts/interfaces/IWhitelistedTokenSale.sol": {
-			"keccak256": "0xe83b507415c08b9230d8bd33f2bd839e933f5c415126c36902fa992ef4991b5c",
+			"keccak256": "0x288b17e9fc0655de13d05c3a93371028880467dde9f4865a77a0d50cdd65e87f",
+			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://0930e623520453ad2228e226251c40b2e880885b40ba2878ec146736c9e8fe95",
-				"dweb:/ipfs/QmbcQwvafdZ9ugBiW5Q25KWq3iAtDLYYk5KavooAcn9PJu"
+				"bzz-raw://36bf1eb17c4801cf5ddca7a20312c3915e2e5b95088aaab6ae2bf95aab702a51",
+				"dweb:/ipfs/QmfKak16x34aGUj7QinaZHsCVNSVahcWsHX8V8zLKakKbi"
 			]
 		}
 	},

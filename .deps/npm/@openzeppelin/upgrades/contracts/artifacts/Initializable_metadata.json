@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -30,7 +30,7 @@
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/upgrades/contracts/Initializable.sol": "Initializable"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -43,10 +43,11 @@
 	},
 	"sources": {
 		".deps/npm/@openzeppelin/upgrades/contracts/Initializable.sol": {
-			"keccak256": "0x2c1a8f332a1374b54c2c52d9a9b40d427d1bbfae0da26d577db5de43e8abad06",
+			"keccak256": "0x9c81c571e2957eb7d19da042b9aed1195457fb970304a770d62079afa1866836",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://bb4e1ab14256539923442e0cb580b47d4c4cd48f089cd4b80a6363524e16d778",
-				"dweb:/ipfs/QmRqRp1f9CUphYkMunrzSyDLWsKVXkMWFhtYn4PhJjVRgS"
+				"bzz-raw://ef3b6ab6bf20d3543d39b7745044c8811c697f627546bcd7c168f73e53fe4e3c",
+				"dweb:/ipfs/Qmb3qediABgB5pA9dX4n9S7sNFg1uAaEP7RJWfDaPZCqv4"
 			]
 		}
 	},

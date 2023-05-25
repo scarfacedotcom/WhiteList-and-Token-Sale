@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Galt Project Society Construction and Terraforming Company
 /*
  * Copyright ©️ 2018-2020 Galt•Project Society Construction and Terraforming Company
  * (Founded by [Nikolai Popeka](https://github.com/npopeka)
@@ -6,7 +7,7 @@
  * (Founded by [Nikolai Popeka](https://github.com/npopeka) by
  * [Basic Agreement](ipfs/QmaCiXUmSrP16Gz8Jdzq6AJESY1EAANmmwha15uR3c1bsS)).
  */
-pragma solidity >=0.6.0 <0.8.2;
+pragma solidity >=0.6.0 <0.9.0;
 //pragma solidity ^0.5.13;
 
 import "./Administrated.sol";
@@ -21,7 +22,7 @@ import "./Administrated.sol";
  * the functions of your contract. Note that they will not be pausable by
  * simply including this module, only once the modifiers are put in place.
  */
-contract Pausable is Administrated {
+abstract contract Pausable is Administrated {
   /**
    * @dev Emitted when the pause is triggered by an admin (`account`).
    */
@@ -38,7 +39,7 @@ contract Pausable is Administrated {
    * @dev Initializes the contract in unpaused state. Assigns the Pauser role
    * to the deployer.
    */
-  constructor () internal {
+  constructor () {
     _paused = false;
   }
 

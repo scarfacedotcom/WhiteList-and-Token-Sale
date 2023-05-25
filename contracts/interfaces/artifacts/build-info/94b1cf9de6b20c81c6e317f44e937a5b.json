@@ -1,0 +1,398 @@
+{
+	"id": "94b1cf9de6b20c81c6e317f44e937a5b",
+	"_format": "hh-sol-build-info-1",
+	"solcVersion": "0.8.19",
+	"solcLongVersion": "0.8.19+commit.7dd6d404",
+	"input": {
+		"language": "Solidity",
+		"sources": {
+			"contracts/interfaces/ITokenSaleRegistry.sol": {
+				"content": "// SPDX-License-Identifier: Galt Project Society Construction and Terraforming Company\n/*\n * Copyright ©️ 2018-2020 Galt•Project Society Construction and Terraforming Company\n * (Founded by [Nikolai Popeka](https://github.com/npopeka)\n *\n * Copyright ©️ 2018-2020 Galt•Core Blockchain Company\n * (Founded by [Nikolai Popeka](https://github.com/npopeka) by\n * [Basic Agreement](ipfs/QmaCiXUmSrP16Gz8Jdzq6AJESY1EAANmmwha15uR3c1bsS)).\n */\n\npragma solidity >=0.5.0 <0.9.0;\n//pragma solidity ^0.5.13;\n\n\ninterface ITokenSaleRegistry {\n  event AddWhitelistedCustomer(address indexed customer, address indexed manager);\n  event RemoveWhitelistedCustomer(address indexed customer, address indexed manager);\n\n  function validateWhitelistedCustomer(address _customer) external view;\n}"
+			}
+		},
+		"settings": {
+			"optimizer": {
+				"enabled": false,
+				"runs": 200
+			},
+			"outputSelection": {
+				"*": {
+					"": [
+						"ast"
+					],
+					"*": [
+						"abi",
+						"metadata",
+						"devdoc",
+						"userdoc",
+						"storageLayout",
+						"evm.legacyAssembly",
+						"evm.bytecode",
+						"evm.deployedBytecode",
+						"evm.methodIdentifiers",
+						"evm.gasEstimates",
+						"evm.assembly"
+					]
+				}
+			}
+		}
+	},
+	"output": {
+		"contracts": {
+			"contracts/interfaces/ITokenSaleRegistry.sol": {
+				"ITokenSaleRegistry": {
+					"abi": [
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "customer",
+									"type": "address"
+								},
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "manager",
+									"type": "address"
+								}
+							],
+							"name": "AddWhitelistedCustomer",
+							"type": "event"
+						},
+						{
+							"anonymous": false,
+							"inputs": [
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "customer",
+									"type": "address"
+								},
+								{
+									"indexed": true,
+									"internalType": "address",
+									"name": "manager",
+									"type": "address"
+								}
+							],
+							"name": "RemoveWhitelistedCustomer",
+							"type": "event"
+						},
+						{
+							"inputs": [
+								{
+									"internalType": "address",
+									"name": "_customer",
+									"type": "address"
+								}
+							],
+							"name": "validateWhitelistedCustomer",
+							"outputs": [],
+							"stateMutability": "view",
+							"type": "function"
+						}
+					],
+					"devdoc": {
+						"kind": "dev",
+						"methods": {},
+						"version": 1
+					},
+					"evm": {
+						"assembly": "",
+						"bytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"deployedBytecode": {
+							"functionDebugData": {},
+							"generatedSources": [],
+							"immutableReferences": {},
+							"linkReferences": {},
+							"object": "",
+							"opcodes": "",
+							"sourceMap": ""
+						},
+						"gasEstimates": null,
+						"legacyAssembly": null,
+						"methodIdentifiers": {
+							"validateWhitelistedCustomer(address)": "9a718924"
+						}
+					},
+					"metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"customer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"manager\",\"type\":\"address\"}],\"name\":\"AddWhitelistedCustomer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"customer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"manager\",\"type\":\"address\"}],\"name\":\"RemoveWhitelistedCustomer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_customer\",\"type\":\"address\"}],\"name\":\"validateWhitelistedCustomer\",\"outputs\":[],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/ITokenSaleRegistry.sol\":\"ITokenSaleRegistry\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/interfaces/ITokenSaleRegistry.sol\":{\"keccak256\":\"0x18f2de3a901ac04c860cef61e95b446f75abc85bae46f987a57f561dd872df8f\",\"license\":\"Galt Project Society Construction and Terraforming Company\",\"urls\":[\"bzz-raw://2f0067cbe21f4c2129fcdee1f1c8d1a0ee3a712d7fe2efe1368c565cab9381b4\",\"dweb:/ipfs/QmRzg2119PptBDTYcL78q5k9sbVUkA5it462L9Vbcv5tLN\"]}},\"version\":1}",
+					"storageLayout": {
+						"storage": [],
+						"types": null
+					},
+					"userdoc": {
+						"kind": "user",
+						"methods": {},
+						"version": 1
+					}
+				}
+			}
+		},
+		"sources": {
+			"contracts/interfaces/ITokenSaleRegistry.sol": {
+				"ast": {
+					"absolutePath": "contracts/interfaces/ITokenSaleRegistry.sol",
+					"exportedSymbols": {
+						"ITokenSaleRegistry": [
+							19
+						]
+					},
+					"id": 20,
+					"license": "Galt Project Society Construction and Terraforming Company",
+					"nodeType": "SourceUnit",
+					"nodes": [
+						{
+							"id": 1,
+							"literals": [
+								"solidity",
+								">=",
+								"0.5",
+								".0",
+								"<",
+								"0.9",
+								".0"
+							],
+							"nodeType": "PragmaDirective",
+							"src": "447:31:0"
+						},
+						{
+							"abstract": false,
+							"baseContracts": [],
+							"canonicalName": "ITokenSaleRegistry",
+							"contractDependencies": [],
+							"contractKind": "interface",
+							"fullyImplemented": false,
+							"id": 19,
+							"linearizedBaseContracts": [
+								19
+							],
+							"name": "ITokenSaleRegistry",
+							"nameLocation": "518:18:0",
+							"nodeType": "ContractDefinition",
+							"nodes": [
+								{
+									"anonymous": false,
+									"eventSelector": "2b80a7166094666d080c901ac2df54fb586e96001a35a0d2caacd94cf65e7db7",
+									"id": 7,
+									"name": "AddWhitelistedCustomer",
+									"nameLocation": "547:22:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 6,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 3,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "customer",
+												"nameLocation": "586:8:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 7,
+												"src": "570:24:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 2,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "570:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 5,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "manager",
+												"nameLocation": "612:7:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 7,
+												"src": "596:23:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 4,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "596:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "569:51:0"
+									},
+									"src": "541:80:0"
+								},
+								{
+									"anonymous": false,
+									"eventSelector": "b5dc59fd5fd7f818cc36389dab245ac1e49cb5261773f5bba251cd049edd2c2f",
+									"id": 13,
+									"name": "RemoveWhitelistedCustomer",
+									"nameLocation": "630:25:0",
+									"nodeType": "EventDefinition",
+									"parameters": {
+										"id": 12,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 9,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "customer",
+												"nameLocation": "672:8:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 13,
+												"src": "656:24:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 8,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "656:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											},
+											{
+												"constant": false,
+												"id": 11,
+												"indexed": true,
+												"mutability": "mutable",
+												"name": "manager",
+												"nameLocation": "698:7:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 13,
+												"src": "682:23:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 10,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "682:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "655:51:0"
+									},
+									"src": "624:83:0"
+								},
+								{
+									"functionSelector": "9a718924",
+									"id": 18,
+									"implemented": false,
+									"kind": "function",
+									"modifiers": [],
+									"name": "validateWhitelistedCustomer",
+									"nameLocation": "720:27:0",
+									"nodeType": "FunctionDefinition",
+									"parameters": {
+										"id": 16,
+										"nodeType": "ParameterList",
+										"parameters": [
+											{
+												"constant": false,
+												"id": 15,
+												"mutability": "mutable",
+												"name": "_customer",
+												"nameLocation": "756:9:0",
+												"nodeType": "VariableDeclaration",
+												"scope": 18,
+												"src": "748:17:0",
+												"stateVariable": false,
+												"storageLocation": "default",
+												"typeDescriptions": {
+													"typeIdentifier": "t_address",
+													"typeString": "address"
+												},
+												"typeName": {
+													"id": 14,
+													"name": "address",
+													"nodeType": "ElementaryTypeName",
+													"src": "748:7:0",
+													"stateMutability": "nonpayable",
+													"typeDescriptions": {
+														"typeIdentifier": "t_address",
+														"typeString": "address"
+													}
+												},
+												"visibility": "internal"
+											}
+										],
+										"src": "747:19:0"
+									},
+									"returnParameters": {
+										"id": 17,
+										"nodeType": "ParameterList",
+										"parameters": [],
+										"src": "780:0:0"
+									},
+									"scope": 19,
+									"src": "711:70:0",
+									"stateMutability": "view",
+									"virtual": false,
+									"visibility": "external"
+								}
+							],
+							"scope": 20,
+							"src": "508:275:0",
+							"usedErrors": []
+						}
+					],
+					"src": "447:336:0"
+				},
+				"id": 0
+			}
+		}
+	}
+}

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Galt Project Society Construction and Terraforming Company
 /*
  * Copyright ©️ 2018-2020 Galt•Project Society Construction and Terraforming Company
  * (Founded by [Nikolai Popeka](https://github.com/npopeka)
@@ -7,7 +8,7 @@
  * [Basic Agreement](ipfs/QmaCiXUmSrP16Gz8Jdzq6AJESY1EAANmmwha15uR3c1bsS)).
  */
 
-pragma solidity >=0.6.0 <0.8.2;
+pragma solidity >=0.5.0 <0.9.0;
 //pragma solidity ^0.5.13;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
@@ -18,7 +19,6 @@ import "./interfaces/IWhitelistedTokenSale.sol";
 import "./interfaces/ITokenSaleRegistry.sol";
 import "./traits/Administrated.sol";
 import "./traits/Pausable.sol";
-
 
 contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable {
   using EnumerableSet for EnumerableSet.AddressSet;
@@ -42,7 +42,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
   mapping(address => TokenInfo) public customerTokenInfo;
 
-  constructor() public {
+  constructor() {
   }
 
   function initialize(address _owner, address _tokenToSell, address _tokenSaleRegistry, bool _whitelistEnabled) public initializer {
@@ -109,7 +109,18 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
   }
 
   function getCustomerTokenList() external view returns (address[] memory) {
-    return customerTokens.enumerate();
+    
+    //JGK 5/25/23 - adjusted below code because .enumerate was throwing a compiler error.
+    //return customerTokens.enumerate();
+
+    uint256 length = customerTokens.length();
+    address[] memory tokens = new address[](length);
+    
+    for (uint256 i = 0; i < length; i++) {
+      tokens[i] = customerTokens.at(i);
+    }
+    
+    return tokens;
   }
 
   function getCustomerTokenCount() external view returns (uint256) {

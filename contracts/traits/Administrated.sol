@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Galt Project Society Construction and Terraforming Company
 /*
  * Copyright ©️ 2018-2020 Galt•Project Society Construction and Terraforming Company
  * (Founded by [Nikolai Popeka](https://github.com/npopeka)
@@ -6,7 +7,7 @@
  * (Founded by [Nikolai Popeka](https://github.com/npopeka) by
  * [Basic Agreement](ipfs/QmaCiXUmSrP16Gz8Jdzq6AJESY1EAANmmwha15uR3c1bsS)).
  */
-pragma solidity >=0.6.0 <0.8.2;
+pragma solidity >=0.5.0 <0.9.0;
 //pragma solidity ^0.5.13;
 
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
@@ -27,7 +28,7 @@ contract Administrated is Initializable, Ownable {
     require(isAdmin(msg.sender), "Administrated: Msg sender is not admin");
     _;
   }
-  constructor() public {
+  constructor() {
   }
 
   function addAdmin(address _admin) external onlyOwner {
@@ -45,7 +46,17 @@ contract Administrated is Initializable, Ownable {
   }
 
   function getAdminList() external view returns (address[] memory) {
-    return admins.enumerate();
+    //JGK 5/25/23 - adjusted below code because .enumerate was throwing a compiler error.
+    //return admins.enumerate();
+
+      uint256 length = admins.length();
+      address[] memory tokens = new address[](length);
+      
+      for (uint256 i = 0; i < length; i++) {
+        tokens[i] = admins.at(i);
+      }
+      
+      return tokens;
   }
 
   function getAdminCount() external view returns (uint256) {

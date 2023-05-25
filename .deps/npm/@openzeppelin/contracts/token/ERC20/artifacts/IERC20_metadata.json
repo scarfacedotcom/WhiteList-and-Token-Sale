@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -232,7 +232,7 @@
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/contracts/token/ERC20/IERC20.sol": "IERC20"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -245,11 +245,11 @@
 	},
 	"sources": {
 		".deps/npm/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-			"keccak256": "0x9dc35746b1dc6a856c0cdd7a6b3872b2a8f70d4f441e131726522f5dff899b34",
+			"keccak256": "0xc9424e6565a2f1b98cdd8b6e0d4b99988c3dee50a48cec894c10de205b2aa81d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8405ec8816373a74cbce4538cae673bcc9f2c8b86a33435becd7c9ce87872d53",
-				"dweb:/ipfs/QmXCQ6ApuNuSCPZhoKWJQpsHb8fqXoeCGFrr3YVQkdWxsL"
+				"bzz-raw://8e78be3b581c80b806a45ae67db74dc136af27fac9153aa6b3838da4de3ec3ae",
+				"dweb:/ipfs/QmTxdSJEk6gFA1jRLVP74x397bNhQ951c4g8VhyYUCpmUf"
 			]
 		}
 	},

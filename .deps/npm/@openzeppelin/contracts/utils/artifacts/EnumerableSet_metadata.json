@@ -1,31 +1,24 @@
 {
 	"compiler": {
-		"version": "0.8.1+commit.df193b15"
+		"version": "0.5.13+commit.5b0b510c"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [],
 		"devdoc": {
-			"details": "Library for managing https://en.wikipedia.org/wiki/Set_(abstract_data_type)[sets] of primitive types. Sets have the following properties: - Elements are added, removed, and checked for existence in constant time (O(1)). - Elements are enumerated in O(n). No guarantees are made on the ordering. ``` contract Example {     // Add the library methods     using EnumerableSet for EnumerableSet.AddressSet;     // Declare a set state variable     EnumerableSet.AddressSet private mySet; } ``` As of v3.3.0, sets of type `bytes32` (`Bytes32Set`), `address` (`AddressSet`) and `uint256` (`UintSet`) are supported.",
-			"kind": "dev",
-			"methods": {},
-			"version": 1
+			"details": "Library for managing https://en.wikipedia.org/wiki/Set_(abstract_data_type)[sets] of primitive types. * Sets have the following properties: * - Elements are added, removed, and checked for existence in constant time (O(1)). - Elements are enumerated in O(n). No guarantees are made on the ordering. * ``` contract Example {    // Add the library methods    using EnumerableSet for EnumerableSet.AddressSet; *     // Declare a set state variable    EnumerableSet.AddressSet private mySet; } ``` * As of v3.3.0, sets of type `bytes32` (`Bytes32Set`), `address` (`AddressSet`) and `uint256` (`UintSet`) are supported.",
+			"methods": {}
 		},
 		"userdoc": {
-			"kind": "user",
-			"methods": {},
-			"version": 1
+			"methods": {}
 		}
 	},
 	"settings": {
 		"compilationTarget": {
 			".deps/npm/@openzeppelin/contracts/utils/EnumerableSet.sol": "EnumerableSet"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "petersburg",
 		"libraries": {},
-		"metadata": {
-			"bytecodeHash": "ipfs"
-		},
 		"optimizer": {
 			"enabled": false,
 			"runs": 200
@@ -34,11 +27,10 @@
 	},
 	"sources": {
 		".deps/npm/@openzeppelin/contracts/utils/EnumerableSet.sol": {
-			"keccak256": "0xbf32ddf9dd216d1e7d5c946ca5de8854de86fcb650faab2a6509a11b97275353",
-			"license": "MIT",
+			"keccak256": "0x19c5d7d4c1141f0f6bf5b4d28e02c8329b78ad323c1931b3069d000ffb98c142",
 			"urls": [
-				"bzz-raw://1fdd7f2bfcbb0507bef208caa94b442aa07a918a8fd52b2b9c4c9df174ec3ff6",
-				"dweb:/ipfs/QmajAnrCrV9mbUX3WRa1ZsJkkS4HPLLopaJLk1aXP1GP7L"
+				"bzz-raw://66f68e50348220ddca37711681bdffc61ea30a4623fc76df8f7713e901a46098",
+				"dweb:/ipfs/QmS8wzwEvby4mLSAcFeBLGXSUoEXy6UNZSXEqeXqCgNAE6"
 			]
 		}
 	},
