@@ -29,6 +29,31 @@
 					{
 						"indexed": true,
 						"internalType": "address",
+						"name": "customer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "ethAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "tokenAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "BuyTokens",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
 						"name": "spender",
 						"type": "address"
 					},
@@ -269,7 +294,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "buyTokens6Working",
+				"name": "buyTokensHoldInContract",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -282,68 +307,9 @@
 			},
 			{
 				"inputs": [],
-				"name": "buyTokens7",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "tokenAmount",
-						"type": "uint256"
-					}
-				],
+				"name": "buyTokensSendToWallet",
+				"outputs": [],
 				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amountInWei",
-						"type": "uint256"
-					}
-				],
-				"name": "convertWeiToEther",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "pure",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"name": "customerTokenInfo",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "rateMul",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "rateDiv",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "totalReceived",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "totalSold",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -374,7 +340,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "getContractBalance",
+				"name": "getContractEtherBalance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -387,7 +353,52 @@
 			},
 			{
 				"inputs": [],
-				"name": "getContractBalanceWholeTokens",
+				"name": "getContractEtherBalanceWholeTokens",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getContractTokenBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getContractTokenBalanceWholeTokens",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_weiAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "getTokenAmountInWei",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -421,19 +432,6 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "sender",
-						"type": "address"
-					}
-				],
-				"name": "initialize",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
 						"name": "_owner",
 						"type": "address"
 					},
@@ -451,6 +449,29 @@
 						"internalType": "bool",
 						"name": "_whitelistEnabled",
 						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_tokensPerEthMultiplier",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_tokensPerEthDivisor",
+						"type": "uint256"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
 					}
 				],
 				"name": "initialize",
@@ -485,19 +506,6 @@
 						"internalType": "bool",
 						"name": "",
 						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "lastResultTokenAmount",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -559,6 +567,24 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "_tokensPerEthMultiplier",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_tokensPerEthDivisor",
+						"type": "uint256"
+					}
+				],
+				"name": "setTokenMath",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "contract ITokenSaleRegistry",
 						"name": "_tokenSaleWhitelistRegistry",
 						"type": "address"
@@ -591,7 +617,7 @@
 				"inputs": [
 					{
 						"internalType": "bool",
-						"name": "_isEnabled",
+						"name": "_whitelistEnabled",
 						"type": "bool"
 					}
 				],
@@ -628,7 +654,20 @@
 			},
 			{
 				"inputs": [],
-				"name": "tokensPerEth",
+				"name": "tokensPerEthDivisor",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokensPerEthMultiplier",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -686,8 +725,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
 				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdrawAll",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -708,19 +760,43 @@
 			},
 			"kind": "dev",
 			"methods": {
-				"buyTokens7()": {
-					"details": "When a function in a Solidity contract is marked as payable, it means the function can receive Ether directly. "
+				"getContractEtherBalance()": {
+					"details": "View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token    based on the math conversion rate. ",
+					"returns": {
+						"_0": "This contract's default Ether balance in WEI (with 18 0's after it). "
+					}
 				},
-				"getContractBalance()": {
-					"details": "View-only function to return this contract's balance in WEI    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
+				"getContractEtherBalanceWholeTokens()": {
+					"details": "View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token    based on the math conversion rate. ",
+					"returns": {
+						"_0": "This contract's default Ether balance in ETH format   "
+					}
+				},
+				"getContractTokenBalance()": {
+					"details": "View-only function to return this contract's token balance in WEI    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
 					"returns": {
 						"_0": "Full contract balance in WEI (with 18 0's after it). "
 					}
 				},
-				"getContractBalanceWholeTokens()": {
+				"getContractTokenBalanceWholeTokens()": {
 					"details": "View-only function to return this contract's balance in whole tokens    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
 					"returns": {
 						"_0": "Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). "
+					}
+				},
+				"getTokenAmountInWei(uint256)": {
+					"details": "Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set     to calculate amount of our token to give back in correspondence.",
+					"params": {
+						"_weiAmount": "is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI."
+					}
+				},
+				"getTokenBalanceAnyWallet(address)": {
+					"details": "Gets amount in WEI of our token that any wallet currently owns.",
+					"params": {
+						"someOwner": "is any wallet address that owns some of our token."
+					},
+					"returns": {
+						"_0": "the amount in WEI of their balance."
 					}
 				},
 				"initialize(address)": {
@@ -746,6 +822,15 @@
 				},
 				"unpause()": {
 					"details": "Called by a pauser to unpause, returns to normal state."
+				},
+				"withdraw(uint256)": {
+					"details": "Whichever admin calls this function will receive the ETH/DAI",
+					"params": {
+						"amount": "Amount of the ETH/DAI requesting to be sent to admin."
+					}
+				},
+				"withdrawAll()": {
+					"details": "Whichever admin calls this function will receive the ETH/DAI"
 				}
 			},
 			"version": 1
@@ -753,14 +838,17 @@
 		"userdoc": {
 			"kind": "user",
 			"methods": {
-				"buyTokens6Working()": {
+				"buyTokensHoldInContract()": {
 					"notice": "Allow users to buy token for ETH"
 				},
-				"buyTokens7()": {
+				"buyTokensSendToWallet()": {
 					"notice": "Allow users to buy token for ETH"
 				},
-				"withdraw()": {
-					"notice": "Allow the owner of the contract to withdraw ETH"
+				"withdraw(uint256)": {
+					"notice": "Allow the owner of the contract to withdraw ETH/DAI"
+				},
+				"withdrawAll()": {
+					"notice": "Allow the owner of the contract to withdraw ETH/DAI"
 				}
 			},
 			"version": 1
@@ -847,11 +935,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0x94f8ec097e2bef3191a615d8e6bffc00547e58fc48b8e2f0cfc49de54e228acd",
+			"keccak256": "0xe477e5be3370e178fdccabd7f18b74452366597f14a908e0c29298e9a80262c0",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://4533b38d16c90ee7f40a2b93a16e43b0a994a5600c649b684eb1f02d19821006",
-				"dweb:/ipfs/QmWYTAuHC3Bk8edyVLtsVzoSYLTtoGP8cNHqokbdencPNg"
+				"bzz-raw://fbdee5f576a2e72c47c775f5d7b8999d8d109e468d5aceb56fa1f1d830387039",
+				"dweb:/ipfs/QmR5hC8kkXJfUMP4hXa6AQ9GKj7eUD7whudg5qqzDffXSp"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {
