@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.19+commit.7dd6d404"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -58,6 +58,44 @@
 					}
 				],
 				"name": "BuyTokens",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "ContractFallbackReceivedTokens",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "ContractReceivedTokens",
 				"type": "event"
 			},
 			{
@@ -213,6 +251,10 @@
 				"type": "event"
 			},
 			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -226,49 +268,48 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_token",
-						"type": "address"
-					},
+				"inputs": [],
+				"name": "buyTokens6Working",
+				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "_rateMul",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_rateDiv",
+						"name": "tokenAmount",
 						"type": "uint256"
 					}
 				],
-				"name": "addOrUpdateCustomerToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "buyTokens7",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenAmount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
 				"inputs": [
 					{
-						"internalType": "contract IERC20",
-						"name": "_customerToken",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "_customerAddress",
-						"type": "address"
-					},
-					{
 						"internalType": "uint256",
-						"name": "_weiAmount",
+						"name": "amountInWei",
 						"type": "uint256"
 					}
 				],
-				"name": "buyTokens",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"name": "convertWeiToEther",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
 				"type": "function"
 			},
 			{
@@ -333,7 +374,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "getCustomerTokenCount",
+				"name": "getContractBalance",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -346,12 +387,12 @@
 			},
 			{
 				"inputs": [],
-				"name": "getCustomerTokenList",
+				"name": "getContractBalanceWholeTokens",
 				"outputs": [
 					{
-						"internalType": "address[]",
+						"internalType": "uint256",
 						"name": "",
-						"type": "address[]"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -361,16 +402,11 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_customerToken",
+						"name": "someOwner",
 						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_weiAmount",
-						"type": "uint256"
 					}
 				],
-				"name": "getTokenAmount",
+				"name": "getTokenBalanceAnyWallet",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -455,19 +491,13 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_customerToken",
-						"type": "address"
-					}
-				],
-				"name": "isTokenAvailable",
+				"inputs": [],
+				"name": "lastResultTokenAmount",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "uint256",
 						"name": "",
-						"type": "bool"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -520,19 +550,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_token",
-						"type": "address"
-					}
-				],
-				"name": "removeCustomerToken",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "renounceOwnership",
 				"outputs": [],
@@ -543,7 +560,7 @@
 				"inputs": [
 					{
 						"internalType": "contract ITokenSaleRegistry",
-						"name": "_tokenSaleRegistry",
+						"name": "_tokenSaleWhitelistRegistry",
 						"type": "address"
 					},
 					{
@@ -552,7 +569,7 @@
 						"type": "bool"
 					}
 				],
-				"name": "setTokenSaleRegistry",
+				"name": "setTokenSaleWhitelistRegistry",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -571,8 +588,21 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "_isEnabled",
+						"type": "bool"
+					}
+				],
+				"name": "setWhitelistEnabled",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [],
-				"name": "tokenSaleRegistry",
+				"name": "tokenSaleWhitelistRegistry",
 				"outputs": [
 					{
 						"internalType": "contract ITokenSaleRegistry",
@@ -591,6 +621,19 @@
 						"internalType": "contract IERC20",
 						"name": "",
 						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "tokensPerEth",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -641,6 +684,17 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -654,6 +708,21 @@
 			},
 			"kind": "dev",
 			"methods": {
+				"buyTokens7()": {
+					"details": "When a function in a Solidity contract is marked as payable, it means the function can receive Ether directly. "
+				},
+				"getContractBalance()": {
+					"details": "View-only function to return this contract's balance in WEI    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
+					"returns": {
+						"_0": "Full contract balance in WEI (with 18 0's after it). "
+					}
+				},
+				"getContractBalanceWholeTokens()": {
+					"details": "View-only function to return this contract's balance in whole tokens    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
+					"returns": {
+						"_0": "Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). "
+					}
+				},
 				"initialize(address)": {
 					"details": "Initializes the contract setting the deployer as the initial owner."
 				},
@@ -683,7 +752,17 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
+			"methods": {
+				"buyTokens6Working()": {
+					"notice": "Allow users to buy token for ETH"
+				},
+				"buyTokens7()": {
+					"notice": "Allow users to buy token for ETH"
+				},
+				"withdraw()": {
+					"notice": "Allow the owner of the contract to withdraw ETH"
+				}
+			},
 			"version": 1
 		}
 	},
@@ -768,11 +847,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0xe5fdd2ae7e6490d2fd7c3ec240db54c3a3764801dbab4114a705adb287a11acd",
+			"keccak256": "0x94f8ec097e2bef3191a615d8e6bffc00547e58fc48b8e2f0cfc49de54e228acd",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://5d410ab0d520d25dea0d337f71f801103041e8a587923f99b52c708a313dd7da",
-				"dweb:/ipfs/QmTrZnXfivP8GyX7JuDorEtrveoqPAwa4bVWSy3CXgJzjh"
+				"bzz-raw://4533b38d16c90ee7f40a2b93a16e43b0a994a5600c649b684eb1f02d19821006",
+				"dweb:/ipfs/QmWYTAuHC3Bk8edyVLtsVzoSYLTtoGP8cNHqokbdencPNg"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {
