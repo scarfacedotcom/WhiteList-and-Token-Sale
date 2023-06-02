@@ -1023,11 +1023,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0x8e692acc45738bfc54b7ac658abab575b7a0e54bd736991f3b61aba038b07105",
+			"keccak256": "0x295b07137dfc1344d504d75fc33e4162e19027bdffdfe5afb00f193bdfc1e3f8",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://22870576d89e18077ea65e34cf3e7bdf4fe592c77e1d7cb408467851f3cfa176",
-				"dweb:/ipfs/QmbP15wcQ8ss4rRGHDevvFeYt2zkZkpA4PCL86CD6axSqT"
+				"bzz-raw://e5e1237e3184a0fdb47e58a3bce873953c91253605d223dd717c4ce455fafb5f",
+				"dweb:/ipfs/QmbHHWwoWdyhU4beVFwjroRBEqSCWuY7ZxjNephXkXv9VZ"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {

@@ -188,11 +188,11 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///     to calculate amount of our token to give back in correspondence.
     ///     The ETH/DAI passed to this function is stored within this wallet.
     /// @return amountToBuy count of our token that was bought.
-    function buyTokensHoldInContract() public payable returns (uint256) {
+    function buyTokensHoldInContract() public payable whenNotPaused returns (uint256) {
         
         // Ensure that the received token is Ether/DAI (not a contract address)
-        address ethAddress = address(0);
-        require(msg.sender == ethAddress, "Only Ether is allowed!");
+        //address ethAddress = address(0);
+        //require(msg.sender == ethAddress, "Only Ether is allowed!");
 
         //msg.value will be in wei units
         require(msg.value > 0, "Send ETH to buy some tokens");
@@ -206,7 +206,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
         // check if our balance of tokenToSell >= the amount being purchased right now. 
         uint256 ourBalance = tokenToSell.balanceOf(address(this));
-        require(ourBalance >= amountToBuy, "Customer balance too low");
+        require(ourBalance >= amountToBuy, "Our token balance too low");
 
         // Transfer token to the msg.sender
         (bool sent) = tokenToSell.transfer(msg.sender, amountToBuy);
@@ -227,8 +227,8 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     function buyTokensSendToWallet() external payable whenNotPaused returns (uint256) {
 
         // Ensure that the received token is Ether/DAI (not a contract address)
-        address ethAddress = address(0);
-        require(msg.sender == ethAddress, "Only Ether is allowed!");
+        //address ethAddress = address(0);
+        //require(msg.sender == ethAddress, "Only Ether is allowed!");
 
         require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
 
@@ -244,7 +244,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
         // check if our balance of tokenToSell >= the amount being purchased right now. 
         uint256 ourBalance = tokenToSell.balanceOf(address(this));
-        require(ourBalance >= amountToBuy, "Customer balance too low");
+        require(ourBalance >= amountToBuy, "Our token balance too low");
 
         //send the customer's DAI to our specified wallet. 
         payable(wallet).transfer(msg.value);
