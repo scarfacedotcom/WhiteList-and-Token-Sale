@@ -298,7 +298,7 @@
 				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "tokenAmount",
+						"name": "",
 						"type": "uint256"
 					}
 				],
@@ -308,7 +308,13 @@
 			{
 				"inputs": [],
 				"name": "buyTokensSendToWallet",
-				"outputs": [],
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
 				"stateMutability": "payable",
 				"type": "function"
 			},
@@ -725,6 +731,20 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "withdrawAllEther",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdrawAllTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -732,14 +752,20 @@
 						"type": "uint256"
 					}
 				],
-				"name": "withdraw",
+				"name": "withdrawEther",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "withdrawAll",
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "withdrawTokens",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -760,6 +786,16 @@
 			},
 			"kind": "dev",
 			"methods": {
+				"buyTokensHoldInContract()": {
+					"returns": {
+						"_0": "amountToBuy count of our token that was bought."
+					}
+				},
+				"buyTokensSendToWallet()": {
+					"returns": {
+						"_0": "amountToBuy count of our token that was bought."
+					}
+				},
 				"getContractEtherBalance()": {
 					"details": "View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token    based on the math conversion rate. ",
 					"returns": {
@@ -773,13 +809,13 @@
 					}
 				},
 				"getContractTokenBalance()": {
-					"details": "View-only function to return this contract's token balance in WEI    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
+					"details": "View-only function to return this contract's token balance in WEI    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE tokenToSell ITSELF.",
 					"returns": {
-						"_0": "Full contract balance in WEI (with 18 0's after it). "
+						"_0": "Full contract balance in WEI format (with 18 0's after it). "
 					}
 				},
 				"getContractTokenBalanceWholeTokens()": {
-					"details": "View-only function to return this contract's balance in whole tokens    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned    of our specific token, and owned by THIS (MyTimeLock's) address.",
+					"details": "View-only function to return this contract's token balance in whole tokens    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS     OF THE tokenToSell ITSELF.",
 					"returns": {
 						"_0": "Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). "
 					}
@@ -802,6 +838,17 @@
 				"initialize(address)": {
 					"details": "Initializes the contract setting the deployer as the initial owner."
 				},
+				"initialize(address,address,address,bool,uint256,uint256)": {
+					"details": "The contract owner must call this function immediately after contract deployment to set initial parameters.",
+					"params": {
+						"_owner": "- the account owner's address which is typically the address of the account used to deploy this contract.",
+						"_tokenSaleRegistry": "- the contract address of the TokenSaleRegistry contract where whitelisted addresses can be placed.",
+						"_tokenToSell": "- the contract address of our token that we're selling.",
+						"_tokensPerEthDivisor": "is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.",
+						"_tokensPerEthMultiplier": "is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens.",
+						"_whitelistEnabled": "- whether we want whitelisting lookups during the Buy operations enabled/disabled. This can be changed      later with calls to either the setTokenSaleWhitelistRegistry function or the setWhitelistEnabled functions."
+					}
+				},
 				"isOwner()": {
 					"details": "Returns true if the caller is the current owner."
 				},
@@ -817,20 +864,55 @@
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
 				},
+				"setTokenMath(uint256,uint256)": {
+					"details": "allows admin to specify a multiplier and/or divisor for calculating price of our custom token in correspondence to amount of ETH/DAI passed in      to the Buy operation.",
+					"params": {
+						"_tokensPerEthDivisor": "is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.",
+						"_tokensPerEthMultiplier": "is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens."
+					}
+				},
+				"setTokenSaleWhitelistRegistry(address,bool)": {
+					"details": "allows admin to specify the lookup to an outside TokenSaleRegistry.sol deployed contract where whitelisted addresses will be held.",
+					"params": {
+						"_tokenSaleWhitelistRegistry": "- the contract for the TokenSaleRegistry",
+						"_whitelistEnabled": "- whether we want whitelisting validation to take place during the Buy operations."
+					}
+				},
+				"setWallet(address)": {
+					"details": "allows admin to specify a wallet where all ETH/DAI used to purchase our token will be sent.",
+					"params": {
+						"_wallet": "is the wallet address where calls to buyToken may be sent vs being stored in this contract until manual withdraw takes place by admin."
+					}
+				},
+				"setWhitelistEnabled(bool)": {
+					"details": "allows an admin to turn whitelist validation on/off",
+					"params": {
+						"_whitelistEnabled": "whether or not admin wants to turn whitelist lookup on/off"
+					}
+				},
 				"transferOwnership(address)": {
 					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
 				},
 				"unpause()": {
 					"details": "Called by a pauser to unpause, returns to normal state."
 				},
-				"withdraw(uint256)": {
+				"withdrawAllEther()": {
+					"details": "Whichever admin calls this function will receive all the ETH/DAI being held in this contract."
+				},
+				"withdrawAllTokens()": {
+					"details": "Whichever admin calls this function will receive all custom tokens being held in this contract."
+				},
+				"withdrawEther(uint256)": {
 					"details": "Whichever admin calls this function will receive the ETH/DAI",
 					"params": {
 						"amount": "Amount of the ETH/DAI requesting to be sent to admin."
 					}
 				},
-				"withdrawAll()": {
-					"details": "Whichever admin calls this function will receive the ETH/DAI"
+				"withdrawTokens(uint256)": {
+					"details": "Whichever admin calls this function will receive the custom tokens being held in this contract.",
+					"params": {
+						"amount": "Amount of the custom token requesting to be sent to admin."
+					}
 				}
 			},
 			"version": 1
@@ -839,16 +921,22 @@
 			"kind": "user",
 			"methods": {
 				"buyTokensHoldInContract()": {
-					"notice": "Allow users to buy token for ETH"
+					"notice": "to calculate amount of our token to give back in correspondence.     The ETH/DAI passed to this function is stored within this wallet."
 				},
 				"buyTokensSendToWallet()": {
-					"notice": "Allow users to buy token for ETH"
+					"notice": "to calculate amount of our token to give back in correspondence.     The ETH/DAI passed to this function is sent to an external wallet."
 				},
-				"withdraw(uint256)": {
+				"withdrawAllEther()": {
 					"notice": "Allow the owner of the contract to withdraw ETH/DAI"
 				},
-				"withdrawAll()": {
+				"withdrawAllTokens()": {
+					"notice": "Allow the owner of the contract to withdraw our custom token."
+				},
+				"withdrawEther(uint256)": {
 					"notice": "Allow the owner of the contract to withdraw ETH/DAI"
+				},
+				"withdrawTokens(uint256)": {
+					"notice": "Allow the owner of the contract to withdraw our custom token."
 				}
 			},
 			"version": 1
@@ -935,11 +1023,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0xe477e5be3370e178fdccabd7f18b74452366597f14a908e0c29298e9a80262c0",
+			"keccak256": "0x8e692acc45738bfc54b7ac658abab575b7a0e54bd736991f3b61aba038b07105",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://fbdee5f576a2e72c47c775f5d7b8999d8d109e468d5aceb56fa1f1d830387039",
-				"dweb:/ipfs/QmR5hC8kkXJfUMP4hXa6AQ9GKj7eUD7whudg5qqzDffXSp"
+				"bzz-raw://22870576d89e18077ea65e34cf3e7bdf4fe592c77e1d7cb408467851f3cfa176",
+				"dweb:/ipfs/QmbP15wcQ8ss4rRGHDevvFeYt2zkZkpA4PCL86CD6axSqT"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {

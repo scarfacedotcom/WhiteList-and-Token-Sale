@@ -56,6 +56,14 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     constructor() {
     }
 
+    ///@dev The contract owner must call this function immediately after contract deployment to set initial parameters.
+    ///@param _owner - the account owner's address which is typically the address of the account used to deploy this contract.
+    ///@param _tokenToSell - the contract address of our token that we're selling.
+    ///@param _tokenSaleRegistry - the contract address of the TokenSaleRegistry contract where whitelisted addresses can be placed.
+    ///@param _whitelistEnabled - whether we want whitelisting lookups during the Buy operations enabled/disabled. This can be changed 
+    ///     later with calls to either the setTokenSaleWhitelistRegistry function or the setWhitelistEnabled functions.
+    ///@param _tokensPerEthMultiplier is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens.
+    ///@param _tokensPerEthDivisor is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.
     function initialize(address _owner, address _tokenToSell, address _tokenSaleRegistry, bool _whitelistEnabled, uint256 _tokensPerEthMultiplier, uint256 _tokensPerEthDivisor) public initializer {
         Ownable.initialize(_owner);
         tokenToSell = IERC20(_tokenToSell);
@@ -65,21 +73,32 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         tokensPerEthDivisor = _tokensPerEthDivisor;
     }
 
+    ///@dev allows admin to specify the lookup to an outside TokenSaleRegistry.sol deployed contract where whitelisted addresses will be held.
+    ///@param _tokenSaleWhitelistRegistry - the contract for the TokenSaleRegistry
+    ///@param _whitelistEnabled - whether we want whitelisting validation to take place during the Buy operations.
     function setTokenSaleWhitelistRegistry(ITokenSaleRegistry _tokenSaleWhitelistRegistry, bool _whitelistEnabled) external onlyAdmin {
         tokenSaleWhitelistRegistry = _tokenSaleWhitelistRegistry;
         whitelistEnabled = _whitelistEnabled;
         emit SetTokenSaleRegistry(address(_tokenSaleWhitelistRegistry), msg.sender, _whitelistEnabled);
     }
 
+    ///@dev allows an admin to turn whitelist validation on/off
+    ///@param _whitelistEnabled whether or not admin wants to turn whitelist lookup on/off
     function setWhitelistEnabled(bool _whitelistEnabled) external onlyAdmin {
         whitelistEnabled = _whitelistEnabled;
     }
 
+    ///@dev allows admin to specify a wallet where all ETH/DAI used to purchase our token will be sent.
+    ///@param _wallet is the wallet address where calls to buyToken may be sent vs being stored in this contract until manual withdraw takes place by admin.
     function setWallet(address _wallet) external onlyAdmin {
         wallet = _wallet;
         emit SetWallet(_wallet, msg.sender);
     }
 
+    ///@dev allows admin to specify a multiplier and/or divisor for calculating price of our custom token in correspondence to amount of ETH/DAI passed in 
+    ///     to the Buy operation.
+    ///@param _tokensPerEthMultiplier is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens.
+    ///@param _tokensPerEthDivisor is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.
     function setTokenMath(uint256 _tokensPerEthMultiplier, uint256 _tokensPerEthDivisor) external onlyAdmin {
         require(_tokensPerEthMultiplier > 0 && _tokensPerEthDivisor > 0, "WhitelistedTokenSale: rates must be > 0");
         
@@ -163,10 +182,13 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
 */
 
-    /**
-    * @notice Allow users to buy token for ETH
-    */
-    function buyTokensHoldInContract() public payable returns (uint256 tokenAmount) {
+    /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
+    /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
+    //      it validates against an external whitelisting contract to ensure the buyer exists. Otherwise, it uses the multiplier and divisor the owner or admin has set
+    ///     to calculate amount of our token to give back in correspondence.
+    ///     The ETH/DAI passed to this function is stored within this wallet.
+    /// @return amountToBuy count of our token that was bought.
+    function buyTokensHoldInContract() public payable returns (uint256) {
         
         // Ensure that the received token is Ether/DAI (not a contract address)
         address ethAddress = address(0);
@@ -196,10 +218,13 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         return amountToBuy;
     }
 
-    /**
-    * @notice Allow users to buy token for ETH
-    */
-    function buyTokensSendToWallet() external payable whenNotPaused {
+    /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
+    /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
+    //      it validates against an external whitelisting contract to ensure the buyer exists. Otherwise, it uses the multiplier and divisor the owner or admin has set
+    ///     to calculate amount of our token to give back in correspondence.
+    ///     The ETH/DAI passed to this function is sent to an external wallet.
+    /// @return amountToBuy count of our token that was bought.
+    function buyTokensSendToWallet() external payable whenNotPaused returns (uint256) {
 
         // Ensure that the received token is Ether/DAI (not a contract address)
         address ethAddress = address(0);
@@ -230,6 +255,8 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
         // emit the event
         emit BuyTokens(msg.sender, msg.value, amountToBuy);
+
+        return amountToBuy;
     }
 
 
@@ -249,21 +276,15 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
 
     /// @dev View-only function to return this contract's token balance in WEI
     ///    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS 
-    ///    OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.
-    ///    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere
-    ///    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned
-    ///    of our specific token, and owned by THIS (MyTimeLock's) address.
-    /// @return Full contract balance in WEI (with 18 0's after it). 
+    ///    OF THE tokenToSell ITSELF.
+    /// @return Full contract balance in WEI format (with 18 0's after it). 
     function getContractTokenBalance() public view returns(uint256){
         return IERC20(tokenToSell).balanceOf(address(this)); 
     }
 
-    /// @dev View-only function to return this contract's balance in whole tokens
+    /// @dev View-only function to return this contract's token balance in whole tokens
     ///    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS 
-    ///    OF THE MYTOKEN ITSELF WHICH WAS PASSED INTO THE CONSTRUCTOR DURING THE DEPLOYMENT OF THIS MyTimeLocak SMART CONTRACT.
-    ///    Anyone can send any type of tokens to the address of a smart contract such as this. They essentially just recorded in a ledger somewhere
-    ///    of the token that is being transferred. So, this function goes out to the myToken's smart contract address and gets the balance owned
-    ///    of our specific token, and owned by THIS (MyTimeLock's) address.
+    ///    OF THE tokenToSell ITSELF.
     /// @return Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). 
     function getContractTokenBalanceWholeTokens() public view returns(uint256){
         uint256 fullBalance = getContractTokenBalance(); 
@@ -310,9 +331,33 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         return amountInEther;
     }
 
+    /// @notice Allow the owner of the contract to withdraw our custom token.
+    /// @dev Whichever admin calls this function will receive all custom tokens being held in this contract.
+    function withdrawAllTokens() public onlyAdmin {
+        uint256 thisBalance = tokenToSell.balanceOf(address(this));
+        require(thisBalance > 0, "No contract balance of our token to withdraw");
+
+        (bool sent) = tokenToSell.transfer(msg.sender, thisBalance);
+        require(sent, "Failed to send contract tokens to admin");
+    }
+
+    /// @notice Allow the owner of the contract to withdraw our custom token.
+    /// @param amount Amount of the custom token requesting to be sent to admin.
+    /// @dev Whichever admin calls this function will receive the custom tokens being held in this contract.
+    function withdrawTokens(uint amount) public onlyAdmin {
+        uint256 thisBalance = tokenToSell.balanceOf(address(this)); 
+        require(thisBalance > 0, "No contract balance of our token to withdraw");
+
+        require(thisBalance >= amount, "Contract does not hold amount requested");
+
+        (bool sent) = tokenToSell.transfer(msg.sender, amount);
+        require(sent, "Failed to send contract tokens to admin");
+    }
+
+
     /// @notice Allow the owner of the contract to withdraw ETH/DAI
-    /// @dev Whichever admin calls this function will receive the ETH/DAI
-    function withdrawAll() public onlyAdmin {
+    /// @dev Whichever admin calls this function will receive all the ETH/DAI being held in this contract.
+    function withdrawAllEther() public onlyAdmin {
         uint256 thisBalance = address(this).balance;
         require(thisBalance > 0, "No contract balance to withdraw");
 
@@ -323,7 +368,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     /// @notice Allow the owner of the contract to withdraw ETH/DAI
     /// @param amount Amount of the ETH/DAI requesting to be sent to admin.
     /// @dev Whichever admin calls this function will receive the ETH/DAI
-    function withdraw(uint amount) public onlyAdmin {
+    function withdrawEther(uint amount) public onlyAdmin {
         uint256 thisBalance = address(this).balance;
         require(thisBalance > 0, "No contract balance to withdraw");
         require(thisBalance >= amount, "Contract does not hold amount requested");
