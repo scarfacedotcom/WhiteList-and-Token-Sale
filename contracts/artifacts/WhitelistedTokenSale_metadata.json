@@ -319,6 +319,76 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_weiAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateTokenAmountInWei",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_weiAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateTokenAmountInWeiWholeTokens",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amountInWei",
+						"type": "uint256"
+					}
+				],
+				"name": "convertWeiToWholeTokens",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "coolDownPeriodInSeconds",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getAdminCount",
 				"outputs": [
@@ -386,25 +456,6 @@
 			{
 				"inputs": [],
 				"name": "getContractTokenBalanceWholeTokens",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_weiAmount",
-						"type": "uint256"
-					}
-				],
-				"name": "getTokenAmountInWei",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -518,6 +569,25 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "lastPurchaseTimestamp",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "owner",
 				"outputs": [
@@ -566,6 +636,19 @@
 			{
 				"inputs": [],
 				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_coolDownPeriodInMinutes",
+						"type": "uint256"
+					}
+				],
+				"name": "setCoolDownPeriodInMinutes",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -796,6 +879,33 @@
 						"_0": "amountToBuy count of our token that was bought."
 					}
 				},
+				"calculateTokenAmountInWei(uint256)": {
+					"details": "Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set     to calculate amount of our token to give back in correspondence.",
+					"params": {
+						"_weiAmount": "is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI."
+					},
+					"returns": {
+						"_0": "amount of our token in WEI format."
+					}
+				},
+				"calculateTokenAmountInWeiWholeTokens(uint256)": {
+					"details": "Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set     to calculate amount of our token to give back in correspondence.",
+					"params": {
+						"_weiAmount": "is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI."
+					},
+					"returns": {
+						"_0": "amount of our token in ETH/DAI full token format."
+					}
+				},
+				"convertWeiToWholeTokens(uint256)": {
+					"details": "Utilizes safemath function to convert wei to whole ETH/DAI amount.",
+					"params": {
+						"amountInWei": "The full amount with 18 0's in it."
+					},
+					"returns": {
+						"_0": "Full amount converted to whole ETH/DAI."
+					}
+				},
 				"getContractEtherBalance()": {
 					"details": "View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token    based on the math conversion rate. ",
 					"returns": {
@@ -820,12 +930,6 @@
 						"_0": "Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). "
 					}
 				},
-				"getTokenAmountInWei(uint256)": {
-					"details": "Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set     to calculate amount of our token to give back in correspondence.",
-					"params": {
-						"_weiAmount": "is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI."
-					}
-				},
 				"getTokenBalanceAnyWallet(address)": {
 					"details": "Gets amount in WEI of our token that any wallet currently owns.",
 					"params": {
@@ -844,7 +948,7 @@
 						"_owner": "- the account owner's address which is typically the address of the account used to deploy this contract.",
 						"_tokenSaleRegistry": "- the contract address of the TokenSaleRegistry contract where whitelisted addresses can be placed.",
 						"_tokenToSell": "- the contract address of our token that we're selling.",
-						"_tokensPerEthDivisor": "is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.",
+						"_tokensPerEthDivisor": "is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.     If we pass in 20 as the divisor then 1 ETH will send buyer .05 of our tokens or 20:1 ration.",
 						"_tokensPerEthMultiplier": "is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens.",
 						"_whitelistEnabled": "- whether we want whitelisting lookups during the Buy operations enabled/disabled. This can be changed      later with calls to either the setTokenSaleWhitelistRegistry function or the setWhitelistEnabled functions."
 					}
@@ -863,6 +967,12 @@
 				},
 				"renounceOwnership()": {
 					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions anymore. Can only be called by the current owner. > Note: Renouncing ownership will leave the contract without an owner, thereby removing any functionality that is only available to the owner."
+				},
+				"setCoolDownPeriodInMinutes(uint256)": {
+					"details": "allows admin to specify how long customer must wait (in minutes) before executing a Buy operation again. Internally this is converted to seconds.",
+					"params": {
+						"_coolDownPeriodInMinutes": "time in minutes customer must wait before buying again."
+					}
 				},
 				"setTokenMath(uint256,uint256)": {
 					"details": "allows admin to specify a multiplier and/or divisor for calculating price of our custom token in correspondence to amount of ETH/DAI passed in      to the Buy operation.",
@@ -1023,11 +1133,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0x295b07137dfc1344d504d75fc33e4162e19027bdffdfe5afb00f193bdfc1e3f8",
+			"keccak256": "0x241d8bf8a88fc04716086f317de2743318fdbd242b009d6a5762a3b88fd6c300",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://e5e1237e3184a0fdb47e58a3bce873953c91253605d223dd717c4ce455fafb5f",
-				"dweb:/ipfs/QmbHHWwoWdyhU4beVFwjroRBEqSCWuY7ZxjNephXkXv9VZ"
+				"bzz-raw://b98a1ac76d519799c4e1342351f5aab5097025644ec925665a17b23f46a23e0f",
+				"dweb:/ipfs/QmX7RfSUeUgCTcroGuV3n8KAoTTZG8eNvnnTnRa7GjBuX7"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {

@@ -21,12 +21,9 @@ import "./traits/Administrated.sol";
 import "./traits/Pausable.sol";
 
 contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable {
-    //using EnumerableSet for EnumerableSet.AddressSet;
+
     using SafeERC20 for IERC20;
     using SafeMath for uint256;
-
-    //JGK 6/1/23 - removing the below as we will only accept DAI.
-    //EnumerableSet.AddressSet internal customerTokens;
 
     IERC20 public tokenToSell;
     ITokenSaleRegistry public tokenSaleWhitelistRegistry;
@@ -39,22 +36,15 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     event BuyTokens(address indexed customer, uint256 ethAmount, uint256 tokenAmount);
 
     //allow contract owner/admin to be able to set this or use the addOrUpdateCustomerToken function.
-    uint256 public tokensPerEthMultiplier = 20; //1 Eth is $1 USD. So, 20 tokens can be purchased for 1 ETH (.05 for each of our tokens)
-    uint256 public tokensPerEthDivisor = 1; 
+    uint256 public tokensPerEthMultiplier = 20; //1 Eth/DAI is $1 USD. So, 20 tokens can be purchased for 1 ETH (.05 for each of our tokens). 1:20. 1 ETH will be equal to 20 of our token.
+    uint256 public tokensPerEthDivisor = 1; //could pass in 20 as the divisor so that 20:1 takes affect and our token is more valuable than ETH/DAI. 1 ETH will be equal to .05 our token.
 
-    /*
-    struct TokenInfo {
-        uint256 rateMul;
-        uint256 rateDiv;
-        uint256 totalReceived;
-        uint256 totalSold;
-    }
-    
-    mapping(address => TokenInfo) public customerTokenInfo;
-    */
+    uint256 public coolDownPeriodInSeconds = 3600; //default to 1 hours (60 seconds in 1 minute * 60 minutes in 1 hour = 3600 seconds);
+    mapping(address => uint256) public lastPurchaseTimestamp;
 
     constructor() {
     }
+    
 
     ///@dev The contract owner must call this function immediately after contract deployment to set initial parameters.
     ///@param _owner - the account owner's address which is typically the address of the account used to deploy this contract.
@@ -64,6 +54,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///     later with calls to either the setTokenSaleWhitelistRegistry function or the setWhitelistEnabled functions.
     ///@param _tokensPerEthMultiplier is the multiplier. 20 would mean 1:20. 1 ETH/DAI would allow them to purchase 20 tokens.
     ///@param _tokensPerEthDivisor is the divisor. Typically we would send a 1 in here unless the cost of our token ends up being priced higher than the price of an ETH/DAI.
+    ///     If we pass in 20 as the divisor then 1 ETH will send buyer .05 of our tokens or 20:1 ration.
     function initialize(address _owner, address _tokenToSell, address _tokenSaleRegistry, bool _whitelistEnabled, uint256 _tokensPerEthMultiplier, uint256 _tokensPerEthDivisor) public initializer {
         Ownable.initialize(_owner);
         tokenToSell = IERC20(_tokenToSell);
@@ -71,6 +62,19 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         whitelistEnabled = _whitelistEnabled;
         tokensPerEthMultiplier = _tokensPerEthMultiplier;
         tokensPerEthDivisor = _tokensPerEthDivisor;
+    }
+
+    /// @dev The receive function must be in here in order for the contract to be able to receive tokens and hold onto them. 
+    receive() external payable{
+              
+        //log
+        emit ContractReceivedTokens(msg.sender, msg.value);
+    }    
+    
+    /// @dev As per best practices, it is good to have a fallback receive function to allow the contract to receive tokens if an error occurs.
+    fallback() external payable {
+        
+        emit ContractFallbackReceivedTokens(msg.sender, msg.value);
     }
 
     ///@dev allows admin to specify the lookup to an outside TokenSaleRegistry.sol deployed contract where whitelisted addresses will be held.
@@ -106,81 +110,13 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         tokensPerEthDivisor = _tokensPerEthDivisor;
     }
 
-/* JGK 6/1/23 - removing the below functions as we will only accept DAI.
-    function addOrUpdateCustomerToken(address _token, uint256 _rateMul, uint256 _rateDiv) external onlyAdmin {
-        require(_rateMul > 0 && _rateDiv > 0, "WhitelistedTokenSale: incorrect rate");
-        customerTokens.add(_token);
-        customerTokenInfo[_token].rateMul = _rateMul;
-        customerTokenInfo[_token].rateDiv = _rateDiv;
-        emit UpdateCustomerToken(_token, _rateMul, _rateDiv, msg.sender);
+    ///@dev allows admin to specify how long customer must wait (in minutes) before executing a Buy operation again. Internally this is converted to seconds.
+    ///@param _coolDownPeriodInMinutes time in minutes customer must wait before buying again.
+    function setCoolDownPeriodInMinutes(uint256 _coolDownPeriodInMinutes) external onlyAdmin {
+
+        coolDownPeriodInSeconds = _coolDownPeriodInMinutes * 60;
     }
 
-    function removeCustomerToken(address _token) external onlyAdmin {
-        customerTokens.remove(_token);
-        emit RemoveCustomerToken(_token, msg.sender);
-    }
-
-    
-    function getTokenAmount(address _customerToken, uint256 _weiAmount) public view returns (uint256) {
-        TokenInfo storage _tokenInfo = customerTokenInfo[_customerToken];
-        return _weiAmount.mul(_tokenInfo.rateMul).div(_tokenInfo.rateDiv);
-    }
-
-    function isTokenAvailable(address _customerToken) public view returns (bool) {
-        return customerTokens.contains(_customerToken);
-    }
-
-    function getCustomerTokenList() external view returns (address[] memory) {
-      
-        //JGK 5/25/23 - adjusted below code because .enumerate was throwing a compiler error.
-        //return customerTokens.enumerate();
-
-        uint256 length = customerTokens.length();
-        address[] memory tokens = new address[](length);
-        
-        for (uint256 i = 0; i < length; i++) {
-          tokens[i] = customerTokens.at(i);
-        }
-        
-        return tokens;
-    }
-
-    function getCustomerTokenCount() external view returns (uint256) {
-        return customerTokens.length();
-    }
-
-    function buyTokens(IERC20 _customerToken, address _customerAddress, uint256 _weiAmount) external whenNotPaused {
-        require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
-        require(_weiAmount > 0, "WhitelistedTokenSale: weiAmount can't be null");
-        require(isTokenAvailable(address(_customerToken)), "WhitelistedTokenSale: _customerToken is not available");
-
-        if (whitelistEnabled) {
-          tokenSaleRegistry.validateWhitelistedCustomer(_customerAddress);
-        }
-
-        uint256 _resultTokenAmount = getTokenAmount(address(_customerToken), _weiAmount);
-        require(_resultTokenAmount > 0, "WhitelistedTokenSale: _resultTokenAmount can't be null");
-
-        lastResultTokenAmount = _resultTokenAmount;
-
-        TokenInfo storage _tokenInfo = customerTokenInfo[address(_customerToken)];
-        _tokenInfo.totalReceived = _tokenInfo.totalReceived.add(_weiAmount);
-        _tokenInfo.totalSold = _tokenInfo.totalSold.add(_resultTokenAmount);
-
-        emit BuyTokens(msg.sender, _customerAddress, address(_customerToken), _weiAmount, _resultTokenAmount);
-
-        //send the customer's DAI to our wallet. msg.sender is the person calling this function.
-        //JGK 5/29/23 - replaced safeTransferFrom with transfer which should be fine because
-        //the person executing this method can do the approval. Otherwise, a pre-approval seems
-        //like it would need performed in order to use the safeTransferFrom method.
-        _customerToken.safeTransferFrom(msg.sender, wallet, _weiAmount);
-        //_customerToken.transfer(wallet, _weiAmount);
-
-        //send our token that they're buying to their address.
-        tokenToSell.safeTransfer(_customerAddress, _resultTokenAmount);
-    }
-
-*/
 
     /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
     /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
@@ -188,11 +124,17 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///     to calculate amount of our token to give back in correspondence.
     ///     The ETH/DAI passed to this function is stored within this wallet.
     /// @return amountToBuy count of our token that was bought.
-    function buyTokensHoldInContract() public payable whenNotPaused returns (uint256) {
+    function buyTokensHoldInContract() external payable whenNotPaused returns (uint256) {
         
         // Ensure that the received token is Ether/DAI (not a contract address)
         //address ethAddress = address(0);
         //require(msg.sender == ethAddress, "Only Ether is allowed!");
+
+        //require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
+
+        //ensure a 0 address wallet isn't being passed in.
+        bool isValid = isValidWalletAddress(msg.sender);
+        require(isValid, "Invalid wallet calling in.");
 
         //msg.value will be in wei units
         require(msg.value > 0, "Send ETH to buy some tokens");
@@ -201,12 +143,18 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
           tokenSaleWhitelistRegistry.validateWhitelistedCustomer(msg.sender);
         }
 
-        uint256 amountToBuy = getTokenAmountInWei(msg.value);
+         // Make sure the user has waited for the cooldown period
+        require(block.timestamp >= lastPurchaseTimestamp[msg.sender] + coolDownPeriodInSeconds, "Cooldown period not over");
+
+        uint256 amountToBuy = calculateTokenAmountInWei(msg.value);
         require(amountToBuy > 0, "WhitelistedTokenSale: amountToBuy must be > 0");
 
         // check if our balance of tokenToSell >= the amount being purchased right now. 
         uint256 ourBalance = tokenToSell.balanceOf(address(this));
         require(ourBalance >= amountToBuy, "Our token balance too low");
+
+        // Update the last purchase timestamp for the user for the cooldown period
+        lastPurchaseTimestamp[msg.sender] = block.timestamp;
 
         // Transfer token to the msg.sender
         (bool sent) = tokenToSell.transfer(msg.sender, amountToBuy);
@@ -230,7 +178,11 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         //address ethAddress = address(0);
         //require(msg.sender == ethAddress, "Only Ether is allowed!");
 
-        require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
+        //require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
+
+        //ensure a 0 address wallet isn't being passed in.
+        bool isValid = isValidWalletAddress(msg.sender);
+        require(isValid, "Invalid wallet calling in.");
 
         //msg.value will be in wei units
         require(msg.value > 0, "Send ETH to buy some tokens");
@@ -239,12 +191,18 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
           tokenSaleWhitelistRegistry.validateWhitelistedCustomer(msg.sender);
         }
 
-        uint256 amountToBuy = getTokenAmountInWei(msg.value);
+        // Make sure the user has waited for the cooldown period
+        require(block.timestamp >= lastPurchaseTimestamp[msg.sender] + coolDownPeriodInSeconds, "Cooldown period not over");
+
+        uint256 amountToBuy = calculateTokenAmountInWei(msg.value);
         require(amountToBuy > 0, "WhitelistedTokenSale: amountToBuy must be > 0");
 
         // check if our balance of tokenToSell >= the amount being purchased right now. 
         uint256 ourBalance = tokenToSell.balanceOf(address(this));
         require(ourBalance >= amountToBuy, "Our token balance too low");
+
+        // Update the last purchase timestamp for the user for the cooldown period
+        lastPurchaseTimestamp[msg.sender] = block.timestamp;
 
         //send the customer's DAI to our specified wallet. 
         payable(wallet).transfer(msg.value);
@@ -263,14 +221,25 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     /// @dev Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set
     ///     to calculate amount of our token to give back in correspondence.
     /// @param _weiAmount is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI.
-    function getTokenAmountInWei(uint256 _weiAmount) public view returns (uint256) {
+    /// @return amount of our token in WEI format.
+    function calculateTokenAmountInWei(uint256 _weiAmount) public view returns (uint256) {
         return _weiAmount.mul(tokensPerEthMultiplier).div(tokensPerEthDivisor);
+    }
+
+    /// @dev Takes in WEI amount that the Buyer has specified that they want to spend. It then uses the multiplier and divisor the owner or admin has set
+    ///     to calculate amount of our token to give back in correspondence.
+    /// @param _weiAmount is the amount in WEI with 18 0's that the buyer is spending of their ETH/DAI.
+    /// @return amount of our token in ETH/DAI full token format.
+    function calculateTokenAmountInWeiWholeTokens(uint256 _weiAmount) public view returns (uint256) {
+        uint256 tokensInWei = _weiAmount.mul(tokensPerEthMultiplier).div(tokensPerEthDivisor);
+
+        return convertWeiToWholeTokens(tokensInWei);
     }
 
     /// @dev Gets amount in WEI of our token that any wallet currently owns.
     /// @param someOwner is any wallet address that owns some of our token.
     /// @return the amount in WEI of their balance.
-    function getTokenBalanceAnyWallet(address someOwner) public view returns(uint256){
+    function getTokenBalanceAnyWallet(address someOwner) public view onlyAdmin returns(uint256){
         return IERC20(tokenToSell).balanceOf(someOwner); 
     }
 
@@ -278,7 +247,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS 
     ///    OF THE tokenToSell ITSELF.
     /// @return Full contract balance in WEI format (with 18 0's after it). 
-    function getContractTokenBalance() public view returns(uint256){
+    function getContractTokenBalance() public view onlyAdmin returns(uint256){
         return IERC20(tokenToSell).balanceOf(address(this)); 
     }
 
@@ -286,12 +255,12 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///    NOTE: THIS IS VERY IMPORT BECAUSE IT'S GOING OUT TO THE LEDGE ESSENTIALLY OF THE MAIN TOKEN CONTRACT AND GETTING THE BALANCE OF THE ADDRESS 
     ///    OF THE tokenToSell ITSELF.
     /// @return Full contract balance in ETH (whole tokens WITHOUT 18 0's after it). 
-    function getContractTokenBalanceWholeTokens() public view returns(uint256){
+    function getContractTokenBalanceWholeTokens() public view onlyAdmin returns(uint256){
         uint256 fullBalance = getContractTokenBalance(); 
 
         if(fullBalance > 0)
         {
-            return convertWeiToEther(fullBalance);
+            return convertWeiToWholeTokens(fullBalance);
         }
         else 
         {
@@ -302,33 +271,24 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     /// @dev View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token
     ///    based on the math conversion rate. 
     /// @return This contract's default Ether balance in WEI (with 18 0's after it). 
-    function getContractEtherBalance() public view returns(uint256){
+    function getContractEtherBalance() public view onlyAdmin returns(uint256){
         return address(this).balance;
     }
 
     /// @dev View-only function to return this contract's Ether balance in WEI. As Buys are made, this contract receives Ether and sends out our custom token
     ///    based on the math conversion rate. 
     /// @return This contract's default Ether balance in ETH format   
-    function getContractEtherBalanceWholeTokens() public view returns(uint256){
+    function getContractEtherBalanceWholeTokens() public view onlyAdmin returns(uint256){
         uint256 fullBalance = getContractEtherBalance(); 
 
         if(fullBalance > 0)
         {
-            return convertWeiToEther(fullBalance);
+            return convertWeiToWholeTokens(fullBalance);
         }
         else 
         {
             return 0;
         }
-    }
-
-
-    /// @dev Utilizes safemath function to convert wei to whole ETH/DAI amount.
-    /// @param amountInWei The full amount with 18 0's in it.
-    /// @return Full amount converted to whole ETH/DAI.
-    function convertWeiToEther(uint256 amountInWei) internal pure returns (uint256) {
-        uint256 amountInEther = amountInWei.div(1 ether);
-        return amountInEther;
     }
 
     /// @notice Allow the owner of the contract to withdraw our custom token.
@@ -361,8 +321,12 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         uint256 thisBalance = address(this).balance;
         require(thisBalance > 0, "No contract balance to withdraw");
 
-        (bool sent,) = msg.sender.call{value: address(this).balance}("");
-        require(sent, "Failed to send contract balance back to the owner");
+        //(bool sent,) = msg.sender.call{value: address(this).balance}("");
+        //require(sent, "Failed to send contract balance back to the owner");
+
+        payable(msg.sender).transfer(address(this).balance);
+
+        
     }
 
     /// @notice Allow the owner of the contract to withdraw ETH/DAI
@@ -373,24 +337,32 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         require(thisBalance > 0, "No contract balance to withdraw");
         require(thisBalance >= amount, "Contract does not hold amount requested");
 
-        (bool sent,) = msg.sender.call{value: amount}("");
-        require(sent, "Failed to send contract balance back to the owner");
+        //(bool sent,) = msg.sender.call{value: amount}("");
+        //require(sent, "Failed to send contract balance back to the owner");
+
+        payable(msg.sender).transfer(amount);
     }
 
-
-    /// @dev The receive function must be in here in order for the contract to be able to receive tokens and hold onto them. 
-    receive() external payable{
-              
-        //log
-        emit ContractReceivedTokens(msg.sender, msg.value);
-    }    
-    
-    /// @dev As per best practices, it is good to have a fallback receive function to allow the contract to receive tokens if an error occurs.
-    fallback() external payable {
-        
-        emit ContractFallbackReceivedTokens(msg.sender, msg.value);
+    /// @dev Utilizes safemath function to convert wei to whole ETH/DAI amount.
+    /// @param amountInWei The full amount with 18 0's in it.
+    /// @return Full amount converted to whole ETH/DAI.
+    //function convertWeiToWholeTokens(uint256 amountInWei) internal pure returns (uint256) {
+    function convertWeiToWholeTokens(uint256 amountInWei) public pure returns (uint256) {
+        uint256 amountInWholeTokens = amountInWei.div(1 ether);
+        return amountInWholeTokens;
     }
 
-
+    /// @dev The isValidWalletAddress checks to make sure the address has not be cleared/deleted by having a wallet voted out. When a wallet is voted out, the mapping
+    ///    element in walletAddresses will still exist but will have been set to the below hex 0 value.
+    /// @param walletToCheck The wallet address to check whether or not it is valid.
+    /// @return true or false for whether or not the passed in wallet address is valid. 
+    function isValidWalletAddress(address walletToCheck) private pure returns (bool){
+        if(walletToCheck == 0x0000000000000000000000000000000000000000 ||
+            walletToCheck == address(0) || 
+             walletToCheck == address(0x0)) 
+            return false;
+         else 
+            return true;
+    }
 
 }
