@@ -20,7 +20,7 @@ import "./interfaces/ITokenSaleRegistry.sol";
 import "./traits/Administrated.sol";
 import "./traits/Pausable.sol";
 
-contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable {
+contract TokenSale is Administrated, IWhitelistedTokenSale, Pausable {
 
     using SafeERC20 for IERC20;
     using SafeMath for uint256;

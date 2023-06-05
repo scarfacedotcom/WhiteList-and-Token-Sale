@@ -16,7 +16,7 @@ import "./interfaces/ITokenSaleRegistry.sol";
 import "./traits/Managed.sol";
 
 
-contract TokenSaleRegistry is Managed, ITokenSaleRegistry {
+contract WhitelistRegistry is Managed, ITokenSaleRegistry {
     using EnumerableSet for EnumerableSet.AddressSet;
 
     EnumerableSet.AddressSet internal customersWhiteList;
