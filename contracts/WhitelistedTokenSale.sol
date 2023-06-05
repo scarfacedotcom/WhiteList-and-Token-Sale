@@ -30,6 +30,7 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     bool public whitelistEnabled;
 
     address public wallet;
+    bool public useWallet;
 
     event ContractReceivedTokens(address indexed from, uint256 amount);
     event ContractFallbackReceivedTokens(address indexed from, uint256 amount);
@@ -95,8 +96,29 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
     ///@dev allows admin to specify a wallet where all ETH/DAI used to purchase our token will be sent.
     ///@param _wallet is the wallet address where calls to buyToken may be sent vs being stored in this contract until manual withdraw takes place by admin.
     function setWallet(address _wallet) external onlyAdmin {
+
+        //ensure wallet address being set is valid
+        bool isValid = isValidWalletAddress(_wallet);
+        require(isValid, "Invalid wallet address.");
+
         wallet = _wallet;
         emit SetWallet(_wallet, msg.sender);
+    }
+
+    ///@dev allows an admin to turn on/off whether ETH/DAI is auto-sent to an outside wallet vs. stored in this contract
+    //   during buyToken operations.
+    ///@param _useWallet whether or not admin wants to have the buyer's ETH/DAI sent to a specified outside wallet vs manually withdrawn later.
+    function setSendToWalletEnabled(bool _useWallet) external onlyAdmin {
+
+        //ensure that a wallet has been specified already if admin is saying to use the wallet and auto-send
+        //ETH/DAI from the buy to the outside wallet during BuyToken operations. 
+        if(_useWallet)
+        {
+            bool isValid = isValidWalletAddress(wallet);
+            require(isValid, "Invalid or no specified wallet.");
+        }
+
+        useWallet = _useWallet;
     }
 
     ///@dev allows admin to specify a multiplier and/or divisor for calculating price of our custom token in correspondence to amount of ETH/DAI passed in 
@@ -117,68 +139,14 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         coolDownPeriodInSeconds = _coolDownPeriodInMinutes * 60;
     }
 
-
     /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
     /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
     //      it validates against an external whitelisting contract to ensure the buyer exists. Otherwise, it uses the multiplier and divisor the owner or admin has set
     ///     to calculate amount of our token to give back in correspondence.
-    ///     The ETH/DAI passed to this function is stored within this wallet.
+    ///     The ETH/DAI passed to this function is either kept within this contract until a manual Withdrawal is performed
+    ///     by an admin, or if useWallet is set to true, then the ETH/DAI is auto-sent to an external wallet.
     /// @return amountToBuy count of our token that was bought.
-    function buyTokensHoldInContract() external payable whenNotPaused returns (uint256) {
-        
-        // Ensure that the received token is Ether/DAI (not a contract address)
-        //address ethAddress = address(0);
-        //require(msg.sender == ethAddress, "Only Ether is allowed!");
-
-        //require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
-
-        //ensure a 0 address wallet isn't being passed in.
-        bool isValid = isValidWalletAddress(msg.sender);
-        require(isValid, "Invalid wallet calling in.");
-
-        //msg.value will be in wei units
-        require(msg.value > 0, "Send ETH to buy some tokens");
-
-        if (whitelistEnabled) {
-          tokenSaleWhitelistRegistry.validateWhitelistedCustomer(msg.sender);
-        }
-
-         // Make sure the user has waited for the cooldown period
-        require(block.timestamp >= lastPurchaseTimestamp[msg.sender] + coolDownPeriodInSeconds, "Cooldown period not over");
-
-        uint256 amountToBuy = calculateTokenAmountInWei(msg.value);
-        require(amountToBuy > 0, "WhitelistedTokenSale: amountToBuy must be > 0");
-
-        // check if our balance of tokenToSell >= the amount being purchased right now. 
-        uint256 ourBalance = tokenToSell.balanceOf(address(this));
-        require(ourBalance >= amountToBuy, "Our token balance too low");
-
-        // Update the last purchase timestamp for the user for the cooldown period
-        lastPurchaseTimestamp[msg.sender] = block.timestamp;
-
-        // Transfer token to the msg.sender
-        (bool sent) = tokenToSell.transfer(msg.sender, amountToBuy);
-        require(sent, "Failed to transfer tokens to customer");
-
-        // emit the event
-        emit BuyTokens(msg.sender, msg.value, amountToBuy);
-
-        return amountToBuy;
-    }
-
-    /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
-    /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
-    //      it validates against an external whitelisting contract to ensure the buyer exists. Otherwise, it uses the multiplier and divisor the owner or admin has set
-    ///     to calculate amount of our token to give back in correspondence.
-    ///     The ETH/DAI passed to this function is sent to an external wallet.
-    /// @return amountToBuy count of our token that was bought.
-    function buyTokensSendToWallet() external payable whenNotPaused returns (uint256) {
-
-        // Ensure that the received token is Ether/DAI (not a contract address)
-        //address ethAddress = address(0);
-        //require(msg.sender == ethAddress, "Only Ether is allowed!");
-
-        //require(wallet != address(0), "WhitelistedTokenSale: wallet is null");
+    function buyTokens() external payable whenNotPaused returns (uint256) {
 
         //ensure a 0 address wallet isn't being passed in.
         bool isValid = isValidWalletAddress(msg.sender);
@@ -204,8 +172,12 @@ contract WhitelistedTokenSale is Administrated, IWhitelistedTokenSale, Pausable 
         // Update the last purchase timestamp for the user for the cooldown period
         lastPurchaseTimestamp[msg.sender] = block.timestamp;
 
-        //send the customer's DAI to our specified wallet. 
-        payable(wallet).transfer(msg.value);
+        //see if we want to keep the ETH/DAI within the contract or send it to a specified external wallet
+        if(useWallet && isValidWalletAddress(wallet))
+        {
+            //send the customer's DAI to our specified wallet. 
+            payable(wallet).transfer(msg.value);
+        }
 
         //send our token that they're buying to their address.
         (bool sent) = tokenToSell.transfer(msg.sender, amountToBuy);

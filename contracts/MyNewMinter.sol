@@ -17,7 +17,7 @@ contract MyNewMinter is ERC20 {
         The constructor will accept up to 10 initial wallets for our founders. 
         The maximum number of wallets that can be added to this contract is 10.
     */
-    constructor() ERC20("TestTokenZ", "TSTZ") {
+    constructor() ERC20("TestTokenF", "TSTF") {
 
         //contract owner is set
         owner = msg.sender;

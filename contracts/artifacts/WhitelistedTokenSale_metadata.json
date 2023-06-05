@@ -294,20 +294,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "buyTokensHoldInContract",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "payable",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "buyTokensSendToWallet",
+				"name": "buyTokens",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -656,6 +643,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "bool",
+						"name": "_useWallet",
+						"type": "bool"
+					}
+				],
+				"name": "setSendToWalletEnabled",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "uint256",
 						"name": "_tokensPerEthMultiplier",
 						"type": "uint256"
@@ -789,6 +789,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "useWallet",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "wallet",
 				"outputs": [
 					{
@@ -869,12 +882,7 @@
 			},
 			"kind": "dev",
 			"methods": {
-				"buyTokensHoldInContract()": {
-					"returns": {
-						"_0": "amountToBuy count of our token that was bought."
-					}
-				},
-				"buyTokensSendToWallet()": {
+				"buyTokens()": {
 					"returns": {
 						"_0": "amountToBuy count of our token that was bought."
 					}
@@ -974,6 +982,11 @@
 						"_coolDownPeriodInMinutes": "time in minutes customer must wait before buying again."
 					}
 				},
+				"setSendToWalletEnabled(bool)": {
+					"params": {
+						"_useWallet": "whether or not admin wants to have the buyer's ETH/DAI sent to a specified outside wallet vs manually withdrawn later."
+					}
+				},
 				"setTokenMath(uint256,uint256)": {
 					"details": "allows admin to specify a multiplier and/or divisor for calculating price of our custom token in correspondence to amount of ETH/DAI passed in      to the Buy operation.",
 					"params": {
@@ -1030,11 +1043,8 @@
 		"userdoc": {
 			"kind": "user",
 			"methods": {
-				"buyTokensHoldInContract()": {
-					"notice": "to calculate amount of our token to give back in correspondence.     The ETH/DAI passed to this function is stored within this wallet."
-				},
-				"buyTokensSendToWallet()": {
-					"notice": "to calculate amount of our token to give back in correspondence.     The ETH/DAI passed to this function is sent to an external wallet."
+				"buyTokens()": {
+					"notice": "to calculate amount of our token to give back in correspondence.     The ETH/DAI passed to this function is either kept within this contract until a manual Withdrawal is performed     by an admin, or if useWallet is set to true, then the ETH/DAI is auto-sent to an external wallet."
 				},
 				"withdrawAllEther()": {
 					"notice": "Allow the owner of the contract to withdraw ETH/DAI"
@@ -1133,11 +1143,11 @@
 			]
 		},
 		"contracts/WhitelistedTokenSale.sol": {
-			"keccak256": "0x241d8bf8a88fc04716086f317de2743318fdbd242b009d6a5762a3b88fd6c300",
+			"keccak256": "0x455500288aee587059a25055a091417abc207fbdccab2c99a990a551c4835b94",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://b98a1ac76d519799c4e1342351f5aab5097025644ec925665a17b23f46a23e0f",
-				"dweb:/ipfs/QmX7RfSUeUgCTcroGuV3n8KAoTTZG8eNvnnTnRa7GjBuX7"
+				"bzz-raw://7245c73b2c25a41d9b6b7a709498e6a24be3ac18fdd875365ddabab63eb73cfd",
+				"dweb:/ipfs/QmTqvxu6WH1jPo2e8PoGYai423HUy8zna1d4dfWpbnBmrb"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {

@@ -417,11 +417,11 @@
 			]
 		},
 		"contracts/MyNewMinter.sol": {
-			"keccak256": "0x70fc73c7da6586f4fd15b40a87de1e7954d5b17e48f491b22da849ce01663060",
+			"keccak256": "0x088da5134ec03c5de6df127954427e34151eba994b9bd5cd83acd98b7d0ca012",
 			"license": "KuhnSoft LLC",
 			"urls": [
-				"bzz-raw://465edb4f53f8316046e64f2fb3db291c5d45a8d1dd8620a893dd8b0aac50e01b",
-				"dweb:/ipfs/QmQqsZUH5G12Ui2g7vCGsxzsECiMzpjTFx6ZXh4GvybNrK"
+				"bzz-raw://ddb7734543835c6305e02c7772b34cd8652c3215ccb922f8dee5daf67015ae96",
+				"dweb:/ipfs/QmdALDSp9qrTAD9FGhMDBt1gnhB5ZssSBHKa2TkVSQ2hhS"
 			]
 		}
 	},
