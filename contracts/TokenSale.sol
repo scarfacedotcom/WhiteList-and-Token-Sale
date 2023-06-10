@@ -40,8 +40,11 @@ contract TokenSale is Administrated, IWhitelistedTokenSale, Pausable {
     uint256 public tokensPerEthMultiplier = 20; //1 Eth/DAI is $1 USD. So, 20 tokens can be purchased for 1 ETH (.05 for each of our tokens). 1:20. 1 ETH will be equal to 20 of our token.
     uint256 public tokensPerEthDivisor = 1; //could pass in 20 as the divisor so that 20:1 takes affect and our token is more valuable than ETH/DAI. 1 ETH will be equal to .05 our token.
 
-    uint256 public coolDownPeriodInSeconds = 3600; //default to 1 hours (60 seconds in 1 minute * 60 minutes in 1 hour = 3600 seconds);
+    uint256 public coolDownPeriodInSeconds = 180; //1 hours would be: (60 seconds in 1 minute * 60 minutes in 1 hour = 3600 seconds);
     mapping(address => uint256) public lastPurchaseTimestamp;
+
+    //allowed DAI purchase amount per session
+    uint256 public maxBuyAmountPerSessionInDAI = 7500;
 
     constructor() {
     }
@@ -139,6 +142,14 @@ contract TokenSale is Administrated, IWhitelistedTokenSale, Pausable {
         coolDownPeriodInSeconds = _coolDownPeriodInMinutes * 60;
     }
 
+    ///@dev allows admin to specify the max amount of Dai (in whole tokens) a customer is allowed to perform on a single buyToken operation before needing to wait for
+    ///     cool-down period to expire.
+    ///@param _maxBuyAmountPerSessionInDAI in whole tokens. This will be converted to Wei to compare during the buyToken operation.
+    function setMaxBuyAmountPerSessionInDAIWholeTokens(uint256 _maxBuyAmountPerSessionInDAI) external onlyAdmin {
+
+        maxBuyAmountPerSessionInDAI = _maxBuyAmountPerSessionInDAI;
+    }
+
     /// @notice Allow buyers of our custom token in exchange for ETH/DAI.
     /// @dev Allow users to buy tokens in exchange for ETH/DAI that is passed to this function. Function looks to see if whitelisting is enabled, and if so,
     //      it validates against an external whitelisting contract to ensure the buyer exists. Otherwise, it uses the multiplier and divisor the owner or admin has set
@@ -163,7 +174,11 @@ contract TokenSale is Administrated, IWhitelistedTokenSale, Pausable {
         require(block.timestamp >= lastPurchaseTimestamp[msg.sender] + coolDownPeriodInSeconds, "Cooldown period not over");
 
         uint256 amountToBuy = calculateTokenAmountInWei(msg.value);
-        require(amountToBuy > 0, "WhitelistedTokenSale: amountToBuy must be > 0");
+        require(amountToBuy > 0, "amountToBuy must be > 0");
+
+        //ensure we're not trying to buy OVER the max amount of allowed Dai to spend per cool-down session without them having to wait to purchase more.
+        uint256 daiAmountInWei = msg.value;
+        require(daiAmountInWei <= maxBuyAmountPerSessionInDAI * (10**18), "Over Maximum DAI purchase amount.");
 
         // check if our balance of tokenToSell >= the amount being purchased right now. 
         uint256 ourBalance = tokenToSell.balanceOf(address(this));

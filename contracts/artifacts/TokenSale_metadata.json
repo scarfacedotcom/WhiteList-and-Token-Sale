@@ -576,6 +576,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "maxBuyAmountPerSessionInDAI",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -636,6 +649,19 @@
 					}
 				],
 				"name": "setCoolDownPeriodInMinutes",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_maxBuyAmountPerSessionInDAI",
+						"type": "uint256"
+					}
+				],
+				"name": "setMaxBuyAmountPerSessionInDAIWholeTokens",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -982,6 +1008,12 @@
 						"_coolDownPeriodInMinutes": "time in minutes customer must wait before buying again."
 					}
 				},
+				"setMaxBuyAmountPerSessionInDAIWholeTokens(uint256)": {
+					"details": "allows admin to specify the max amount of Dai (in whole tokens) a customer is allowed to perform on a single buyToken operation before needing to wait for     cool-down period to expire.",
+					"params": {
+						"_maxBuyAmountPerSessionInDAI": "in whole tokens. This will be converted to Wei to compare during the buyToken operation."
+					}
+				},
 				"setSendToWalletEnabled(bool)": {
 					"params": {
 						"_useWallet": "whether or not admin wants to have the buyer's ETH/DAI sent to a specified outside wallet vs manually withdrawn later."
@@ -1143,11 +1175,11 @@
 			]
 		},
 		"contracts/TokenSale.sol": {
-			"keccak256": "0x67c8116c3d9e67fb273ef10fcc344f98ba4e3da5015c213c551468c029222074",
+			"keccak256": "0x2f48ad0232040feb80ebe48c78bc23312406707ab90034277524b92d3f236cc6",
 			"license": "Galt Project Society Construction and Terraforming Company",
 			"urls": [
-				"bzz-raw://b4998f61302001361198a84795916aa0faafa1e3342c6378d70601f9c98af9b8",
-				"dweb:/ipfs/QmcrHVVyxgDGPLkzC7dpBWNAcCyCFKYV3Rhsi7d461ujew"
+				"bzz-raw://8f5e4d843fcd5e4ca7ee6903069a6994208bbbc3d9ad8ced8ff84c326ae44c50",
+				"dweb:/ipfs/QmUkRh6YH7BQwrDYo3Z4t3BohGu5QmTZpzMGsphmcp4N1d"
 			]
 		},
 		"contracts/interfaces/ITokenSaleRegistry.sol": {
