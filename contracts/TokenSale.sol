@@ -12,9 +12,12 @@ pragma solidity >=0.5.0 <0.9.0;
 //pragma solidity ^0.5.13;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
+//import "../.deps/npm/@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+//import "../.deps/npm/@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+//import "../.deps/npm/@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "./interfaces/IWhitelistedTokenSale.sol";
 import "./interfaces/ITokenSaleRegistry.sol";
 import "./traits/Administrated.sol";
